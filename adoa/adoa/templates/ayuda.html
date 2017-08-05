@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+<!DOCTYPE html>
+
+
+
+{% block head_title %}¿Por qué lo ayudara ADOA? | {{ block.super }}{% endblock %}
+
+{% block jumbotron %}
+ <div class="container">
+  <div class="jumbotron text-center">
+    
+      <div class="row">                             
+        <div class="col-xs12"><img src="{% static 'img/index/ayuda.png' %}" class="img-responsive" alt="Placeholder image"> </div>
+      </div>
+    </div>
+  </div>
+  
+{% endblock %}
+
+<!--  SECTION-1 -->
+{% block content %}
+<section>
+  <div class="container well">
+    <div class="row">
+      <div class="col-md-4 col-sm-6 col-lg-12">
+        <div class="media">
+          <div class="media-left"> <a href="#">  </a> </div>
+          <div class="media-body">
+ Información sobre las utilidades del programa y como aprovechar al maximo sus utilidades. </div>
+        </div>
+      </div>
+</div>
+  </div>
+</section>
+  <center> <a href="{% url 'index' %}"> <button type="button" class="btn btn-default">Volver</button></a></center>
+  <br></br>
+    <br></br>
+      <br></br>
+	  {% endblock %}

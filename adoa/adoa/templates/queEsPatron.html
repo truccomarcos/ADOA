@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+<!DOCTYPE html>
+
+
+
+{% block head_title %}Index | {{ block.super }}{% endblock %}
+
+{% block jumbotron %}
+ 
+  
+    <div class="container">
+      <div class="jumbotron text-center">
+      <div class="row">
+        <div class="col-xs12"><img src="{% static 'img/index/patron2.png' %}" class="img-responsive" alt="Placeholder image"> </div>
+      </div>
+    </div>
+  </div>
+ 
+{% endblock %}
+{% block content %}
+<section>
+  <div class="container well">
+    <div class="row">
+      <div class="col-md-4 col-sm-6 col-lg-12">
+        <div class="media">
+      <!--   <div class="media-left"> <a href="#">  </a> </div>-->
+          <div class="media-body">
+          Los Patrones Pedagógicos formalizan el conocimiento experto de la enseñanza y el aprendizaje, fácilmente comunicable a aquellos que necesitan ese conocimiento. </div>
+        </div>
+      </div>
+</div>
+  </div>
+</section>
+  <center> <a href="{% url 'index' %}"> <button type="button" class="btn btn-default">Volver</button></a></center>
+  <br></br>
+    <br></br>
+      <br></br>
+	  {% endblock %}

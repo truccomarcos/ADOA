@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+<!DOCTYPE html>
+
+
+
+{% block head_title %}Que es OA | {{ block.super }}{% endblock %}
+{% block style %}
+
+.center {
+    margin: auto;
+    width: 10%; 
+    padding: 10px;
+}
+
+{% endblock %}
+
+{% block jumbotron %}
+ 
+    <div class="container">
+      <div class="jumbotron text-center">
+      <div class="row">
+        <div class="col-xs12"><img src="{% static 'img/index/qeoa.png'%}" class="img-responsive" alt="Placeholder image" align="middle"></div>
+      </div>
+    </div>
+  </div>
+ 
+{% endblock %}
+
+{% block content %}
+  <div class="container well">
+    <div class="row">
+      <div class="col-md-4 col-sm-6 col-lg-12">
+        <div class="media">
+          
+            <div class="media-body">
+              <h4 style="text-align: center;"><tt><span style="font-family:arial,helvetica,sans-serif">Es muy f&aacute;cil elaborar un Objeto de Aprendizaje. En vuestra labor como docentes frecuentemente separamos los diferentes conocimientos y habilidades, definimos objetivos de aprendizaje generales o espec&iacute;ficos y dise&ntilde;amos unidades m&iacute;nimas de formaci&oacute;n: contenidos formativos puntuales, m&oacute;dulos, trabajos pr&aacute;cticos, ejercicios, demostraciones y autoevaluaciones. Todo ello, con el fin de que nuestros estudiantes aborden cada segmento en busca de adquirir competencias o conocimientos concretos. Estas unidades m&iacute;nimas quedan plasmadas en documentos personales que bien podr&iacute;an compartirse con colegas como Objetos de Aprendizaje para ser aplicados en otros contextos, lo cual nos servir&iacute;a para complementar nuestra experiencia y avanzar en el conocimiento. </span></tt></h4>
+
+              <hr />
+              <h4 style="text-align: center;"><tt><span style="font-family:arial,helvetica,sans-serif">De otra parte, muchos docentes podr&iacute;amos hacer parte de comunidades acad&eacute;micas interesadas en contribuir con procesos cooperativos de construcci&oacute;n y divulgaci&oacute;n del conocimiento, aportando nuestros propios Objetos de Aprendizaje, elaborados a partir de unidades m&iacute;nimas de contenido educativo que nosotros mismos dise&ntilde;amos, para que otros miembros de las comunidades acad&eacute;micas los utilicen. </span></tt></h4>
+
+              <hr />
+              <h4 style="text-align: center;"><tt><span style="font-family:arial,helvetica,sans-serif">Con el fin de facilitar la comprensi&oacute;n del concepto de Objeto de Aprendizaje definimos este como un conjunto de recursos digitales, autocontenible y reutilizable, con un prop&oacute;sito educativo y constituido por al menos tres componentes internos: contenidos, actividades de aprendizaje y elementos de contextualizaci&oacute;n. El Objeto de Aprendizaje debe tener una estructura de informaci&oacute;n externa (metadatos) que facilite su almacenamiento, identificaci&oacute;n y recuperaci&oacute;n&quot;.</span></tt></h4>
+
+              <p style="text-align: center;">&nbsp;</p>
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<br><br>
+  <center> <a href="{% url 'index' %}"> <button type="button" class="btn btn-default">Volver</button></a></center>
+	  {% endblock %}

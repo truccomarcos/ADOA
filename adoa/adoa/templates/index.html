@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+<!DOCTYPE html>
+{% block head_title %}Index | {{ block.super }}{% endblock %}
+
+
+<!--  SECTION-1 -->
+
+
+{% block jumbotron %}
+<div class="container">
+  <div class="jumbotron text-center">
+      <div class="row">                             
+        <div class="col-xs12"><img src="{% static 'img/index/nuevoindex1.png' %}" class="img-responsive" alt="Placeholder image"> </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+{% block content %}	
+          <br></br>
+   </center>
+  </div>
+  <div class="container ">
+    <div class="row">
+      <div class="col-lg-4 col-sm-12 text-center"> <a href="{% url 'queEsOA' %}"> <img class="img-circle" alt="140x140" style="width: 140px; height: 140px;" src="{% static 'img/index/redes.jpg' %}" data-holder-rendered="true">
+        <h3>¿Qué es un Objeto de Aprendizaje?</h3>
+        </a>
+        <p>Se resume como una colección de contenidos, ejercicios, y evaluaciones que son combinados sobre la base de un objetivo de aprendizaje simple.<br> <a href="{% url 'queEsOA' %}"> Ver más.</a></br></p>
+      </div>
+      <div class="col-lg-4 col-sm-12 text-center"> <a href="{% url 'queEsPatron' %}"> <img class="img-circle" alt="140x140" style="width: 140px; height: 140px;" src="{% static 'img/index/cerebro1.png' %}" data-holder-rendered="true">
+        <h3>¿Qué es un Patrón Pedagógico?</h3>&nbsp;
+      </a>
+        <p>Los Patrones Pedagógicos formalizan el conocimiento experto de la enseñanza y el aprendizaje, fácilmente comunicable a aquellos que necesitan ese conocimiento. <a href="{% url 'queEsPatron' %}"> Ver más.</a></p>
+      </div>
+      <div class="col-lg-4 col-sm-12 text-center"><a href="{% url 'ayuda' %}"><img class="img-circle" alt="140x140" style="width: 140px; height: 140px;" src="{% static 'img/index/pregunta.jpg' %}" data-holder-rendered="true">
+        <h3>¿Porqué nuestro programa lo ayudará?</h3>
+      </a>
+        <p>Información sobre las utilidades del programa y como aprovechar al maximo sus utilidades. <br><a href="{% url 'ayuda' %}">Ver más.</a></br></p>
+      </div>
+</div>
+<!-- /container -->
+
+  
+
+  <!-- / CONTAINER-->
+</section>
+<div class="well">
+  <center><button type="button" class="btn btn-success" onclick="location.href='{% url 'inicioOA' %}'" >Crear OA</button></center>
+</div>
+
+{% endblock %}
