@@ -32,7 +32,6 @@ EMAIL_HOST_PASSWORD = 'adoa3unla'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,6 +45,9 @@ INSTALLED_APPS = [
     'crispy_forms',
     'registration',
     'tinymce',
+    'django_wysiwyg',
+    'ckeditor',
+    'ckeditor_uploader'
 ]
 
 MIDDLEWARE = [
@@ -159,3 +161,42 @@ LOGIN_REDIRECT_URL =  '/'
 LOGOUT_REDIRECT_URL ='/'
 
 SITE_ID = 1
+
+DJANGO_WYSIWYG_FLAVOR = "ckeditor"
+
+#CKEDITOR
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': [
+            [      'Undo', 'Redo',
+              '-', 'Bold', 'Italic', 'Underline',
+              '-', 'Link', 'Unlink', 'Anchor',
+              '-', 'Format',
+              '-', 'SpellChecker', 'Scayt',
+              '-', 'Maximize',
+            ],
+            [      'HorizontalRule',
+              '-', 'Table',
+              '-', 'BulletedList', 'NumberedList',
+              '-', 'Cut','Copy','Paste','PasteText','PasteFromWord',
+              '-', 'SpecialChar',
+              '-', 'Source',
+              '-', 'About',
+            ],
+
+        ],
+        'width': 1140,
+        'height': 300,
+        'toolbarCanCollapse': False,
+    },
+
+    'simple_toolbar': {
+        'toolbar': [
+            [ 'Bold', 'Italic', 'Underline' ],
+        ],
+        'width': 840,
+        'height': 300,
+    },
+}

@@ -93,16 +93,11 @@ def inicioOA(request):
         "title": title,
         "form": form
     }
-
-
     if form.is_valid():
-
         titulo1 = form.cleaned_data.get("titulo")
         descripcion1 = form.cleaned_data.get("descripcion")
         patron1 = form.cleaned_data.get("patron")
         user_request = request.user
-
-
         user = User.objects.get(username = user_request)
         oa = ObjetoAprendizaje(titulo = titulo1, descripcion = descripcion1, patron = patron1, user = user)
 
