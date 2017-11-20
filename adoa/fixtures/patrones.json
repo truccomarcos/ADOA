@@ -1,0 +1,57 @@
+[
+  {
+    "model":"adoa.Patron",
+    "pk": 1,
+    "fields":
+    {
+      "titulo":"Early Bird",
+      "descripcion":"<p><span style=\"font-size: 11.0pt; line-height: 107%; font-family: ''Calibri'',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: ''Times New Roman''; mso-bidi-theme-font: minor-bidi; mso-ansi-language: ES-AR; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\">Aplicaci&oacute;n amplia en casi cualquier dominio.&nbsp;</span></p>",
+      "problemas":"<p><span style=\"font-size: 11.0pt; line-height: 107%; font-family: ''Calibri'',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: ''Times New Roman''; mso-bidi-theme-font: minor-bidi; mso-ansi-language: ES-AR; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\">Los estudiantes necesitan saber a donde apunta la clase, y ver como se va a relacionaran las ideas principales. Suelen recordar mejor lo que se aprende primero.</span></p>",
+      "solucion":"<p><span style=\"font-size: 11.0pt; line-height: 107%; font-family: ''Calibri'',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: ''Times New Roman''; mso-bidi-theme-font: minor-bidi; mso-ansi-language: ES-AR; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\">Ense&ntilde;ar primero los temas m&aacute;s importantes y retomarlos a medida que se dicta la clase. Identificar las ideas principales, haciendo &eacute;nfasis en ellas.</span></p>"
+    }
+  },
+  {
+    "model":"adoa.Patron",
+    "pk": 2,
+    "fields":
+    {
+      "titulo":"Toy Box",
+      "descripcion":"<p><span style=\"font-size: 11.0pt; line-height: 107%; font-family: ''Calibri'',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: ''Times New Roman''; mso-bidi-theme-font: minor-bidi; mso-ansi-language: ES-AR; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\">Se tratan ideas complejas en las que se les quiere dar un panorama hist&oacute;rico y tecnol&oacute;gico a los estudiantes, para que jueguen con herramientas pedag&oacute;gicas ilustrativas.</span></p>",
+      "problemas":"<p><span style=\"font-size: 11.0pt; line-height: 107%; font-family: ''Calibri'',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: ''Times New Roman''; mso-bidi-theme-font: minor-bidi; mso-ansi-language: ES-AR; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\">Los estudiantes tienen que lidiar con una gran nivel de detalle, con una complejidad m&aacute;s all&aacute; de sus habilidades.</span></p>",
+      "solucion":"<p><span style=\"font-size: 11.0pt; line-height: 107%; font-family: ''Calibri'',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: ''Times New Roman''; mso-bidi-theme-font: minor-bidi; mso-ansi-language: ES-AR; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\">Se les da a los estudiantes ejemplos pr&aacute;cticos, real&iacute;sticos, y llevados a un nivel bajo para que puedan comprender como funciona.</span></p>"
+    }
+  },
+  {
+    "model":"adoa.Patron",
+    "pk": 3,
+    "fields":
+    {
+      "titulo":"Spiral",
+      "descripcion":"<p><span style=\"font-size: 11.0pt; line-height: 107%; font-family: ''Calibri'',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: ''Times New Roman''; mso-bidi-theme-font: minor-bidi; mso-ansi-language: ES-AR; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\">Cualquier tema que tenga una gran cantidad de contenidos, los cuales requieren ser comprendidos y dominados en su totalidad.</span></p>",
+      "problemas":"<p><span style=\"font-size: 11.0pt; line-height: 107%; font-family: ''Calibri'',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: ''Times New Roman''; mso-bidi-theme-font: minor-bidi; mso-ansi-language: ES-AR; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\">Si se ense&ntilde;an los temas de manera secuencial, los estudiantes pueden perder inter&eacute;s en conceptos dados anteriormente. Se dificulta la ense&ntilde;anza de muchos contenidos relacionados entre s&iacute;, ya que se requiere de una comprensi&oacute;n completa de todos ellos.</span></p>",
+      "solucion":"<p><span style=\"font-size: 11.0pt; line-height: 107%; font-family: ''Calibri'',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: ''Times New Roman''; mso-bidi-theme-font: minor-bidi; mso-ansi-language: ES-AR; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\">Dar la clase de manera tal que los contenidos que se ense&ntilde;an no sean vistos completamente, sino que se da una introducci&oacute;n de cada uno de ellos. Se les da a los estudiantes problemas para trabajar con ellos, y luego se retoman los contenidos en un nuevo ciclo, d&aacute;ndole mas detalle a cada contenido.</span></p>"
+    }
+  },
+  {
+    "model":"adoa.Patron",
+    "pk": 4,
+    "fields":
+    {
+      "titulo":"Tool Box",
+      "descripcion":"<p><span style=\"font-size: 11.0pt; line-height: 107%; font-family: ''Calibri'',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: ''Times New Roman''; mso-bidi-theme-font: minor-bidi; mso-ansi-language: ES-AR; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\">Se busca que los estudiantes puedan desarrollar herramientas simples para returilizarlas en cursos mas tard&iacute;os.</span></p>",
+      "problemas":"<p><span style=\"font-size: 11.0pt; line-height: 107%; font-family: ''Calibri'',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: ''Times New Roman''; mso-bidi-theme-font: minor-bidi; mso-ansi-language: ES-AR; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\">Los estudiantes necesitan usar temas que se vieron previamente, pero no tienen experiencia pr&aacute;ctica con los mismos.</span></p>",
+      "solucion":"<p><span style=\"font-size: 11.0pt; line-height: 107%; font-family: ''Calibri'',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: ''Times New Roman''; mso-bidi-theme-font: minor-bidi; mso-ansi-language: ES-AR; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\">Proponerle a los estudiantes construir sus propias herramientas, para reutilizarlas en proyectos futuros.&nbsp;</span></p>"
+    }
+  },
+  {
+    "model":"adoa.Patron",
+    "pk": 5,
+    "fields":
+    {
+      "titulo":"Lay of the Land",
+      "descripcion":  "<p><span style=\"font-size: 11.0pt; line-height: 107%; font-family: ''Calibri'',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: ''Times New Roman''; mso-bidi-theme-font: minor-bidi; mso-ansi-language: ES-AR; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\">Ense&ntilde;ar temas con muchas partes que se interrelacionan en varias formas.</span></p>",
+      "solucion":"<p><span style=\"font-size: 11.0pt; line-height: 107%; font-family: ''Calibri'',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: ''Times New Roman''; mso-bidi-theme-font: minor-bidi; mso-ansi-language: ES-AR; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\">Se le da a los estudiantes un ejemplo de una gran idea en acci&oacute;n. Se les da el panorama general de un tema para darles la motivaci&oacute;n del estudio de las partes.</span></p>",
+      "problemas":"<p><span style=\"font-size: 11.0pt; line-height: 107%; font-family: ''Calibri'',sans-serif; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: ''Times New Roman''; mso-bidi-theme-font: minor-bidi; mso-ansi-language: ES-AR; mso-fareast-language: EN-US; mso-bidi-language: AR-SA;\">Los estudiantes tienen solo la capacidad de&nbsp; producir artefactos simples, pero pueden examinar de manera superficial artefactos m&aacute;s grandes</span></p>"
+    }
+  }
+]

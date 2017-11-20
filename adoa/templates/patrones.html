@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+<!DOCTYPE html>
+
+
+
+{% block head_title %}Patrones disponibles | {{ block.super }}{% endblock %}
+{% block style %}
+
+.center {
+    margin: auto;
+    width: 10%; 
+    padding: 10px;
+}
+
+{% endblock %}
+
+{% block jumbotron %}
+
+ 
+{% endblock %}
+
+{% block content %}
+	
+          {% for patron in patrones %}
+
+            {% csrf_token %}
+            	<div class="well">
+			        
+			            <h3>
+			            	<span style="color:#000000">
+			            		<span style="font-family:trebuchet ms,helvetica,sans-serif">
+			            			<span style="background-color:#00FFFF">{{patron.titulo}}</span>
+			            		</span>
+			            	</span>
+			            </h3>
+			            <p>{{patron.descripcion|safe}}</p>
+			            
+			            <ul>  
+				            <li>
+					            <h4>Problema al que apunta</h4>            
+					            <p>{{patron.problemas|safe}}</p>
+					        </li>  		
+					        <li>
+					            <h4>Solucion Propuesta</h4>
+					            <p>{{patron.solucion|safe}}</p>
+					        </li>
+			        	</ul>
+		        	
+	        	</div>
+          {% endfor%}
+    
+   
+{% endblock %}

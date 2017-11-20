@@ -25,8 +25,12 @@ SECRET_KEY = 'fx2xsd*#*u_zg*ra@9%*%3zi9sj_jed$9uga85bw%#&5)7m(w^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = 'adoa3.unla@gmail.com'
+EMAIL_HOST_PASSWORD = 'adoa3unla'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 
 # Application definition
@@ -38,7 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'adoa'
+    'adoa',
+    'crispy_forms',
+    'registration',
+    'tinymce',
 ]
 
 MIDDLEWARE = [
@@ -123,3 +130,32 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static", "static_root")
+MEDIA_ROOT = os.path.join(BASE_DIR, "media", "media_root")
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static", "our_static"),
+    #'/var/www/static/',
+)
+
+MEDIAFILES_DIRS = (
+    os.path.join(BASE_DIR, "media", "our_media"),
+)
+
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': "advanced",
+}
+
+##CRISPY FORMS
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+##DJANGO REGISTRATION REDUS SETTINGS
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+
+LOGIN_REDIRECT_URL =  '/'
+LOGOUT_REDIRECT_URL ='/'
+
+SITE_ID = 1
