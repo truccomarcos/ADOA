@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 from django.db import models
+from django.contrib import admin
+from django.contrib.auth.models import *
 from ckeditor.fields import RichTextField
 
 
@@ -33,7 +35,7 @@ class ObjetoAprendizaje(models.Model):
     titulo=models.CharField(max_length=30)
     descripcion= RichTextField()
     patron = models.ForeignKey(Patron)
-    # user = models.ForeignKey(User)
+    user = models.ForeignKey(User)
     def setearContenidos(self):
         li=[]
         for contenidoPatron in ContenidoPatron.objects.all():
