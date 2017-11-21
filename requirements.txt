@@ -1,6 +1,7 @@
 django
 MySQL-python
-django-wysiwyg 
+django-wysiwyg
 django-ckeditor
 django-registration-redux
 django-tinymce
+python-dotenv

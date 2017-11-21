@@ -9,8 +9,6 @@ from ckeditor.widgets import CKEditorWidget
 from crispy_forms.bootstrap import *
 
 
-
-
 class ObjetoAprendizajeForm(forms.Form):
     # class Meta:
     #     model = ObjetoAprendizaje
@@ -19,22 +17,22 @@ class ObjetoAprendizajeForm(forms.Form):
     descripcion = forms.CharField(widget=CKEditorWidget())
     patron = forms.ModelChoiceField(queryset=Patron.objects.all())
     def __init__(self, *args, **kwargs):
-        
+
         self.helper= FormHelper()
         self.helper.layout = Layout(
             Div(
                 Div('Objeto de Aprendizaje'),
-                Div('patron', HTML("<a href= '{% url 'patrones' %}''>Que patron elegir? </a>"),), 
-                Div('titulo', ), 
-                Div('descripcion', ),  
+                Div('patron', HTML("<a href= '{% url 'patrones' %}''>Que patron elegir? </a>"),),
+                Div('titulo', ),
+                Div('descripcion', ),
                 HTML("<div class='well'><center><button type='submit' class='btn btn-success' >Guardar y contiunar</button></center></div>"),
                 # Submit('contunuar', 'Guardar y Continuar'),
-        css_class='row-fluid'), 
-               
+        css_class='row-fluid'),
+
         )
         super(ObjetoAprendizajeForm, self).__init__(*args, **kwargs)
 
- 
+
 class PatronForm(ModelForm):
     class Meta:
         model = Patron
@@ -48,7 +46,7 @@ class ContenidoForm(forms.Form):
     orden = forms.IntegerField()
     titulo = forms.CharField(max_length=100)
     descripcion = forms.CharField(max_length=200,widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    contenido = forms.CharField(widget=CKEditorWidget()) 
+    contenido = forms.CharField(widget=CKEditorWidget())
     # objetoAprendizaje = forms.ModelChoiceField(queryset=ObjetoAprendizaje.objects.all(), initial = ObjetoAprendizaje.objects.get(pk=1))
     def __init__(self, *args, **kwargs):
         self.helper= FormHelper()
@@ -61,11 +59,11 @@ class ContenidoForm(forms.Form):
 
 
 
-            css_class='row-fluid'),    
+            css_class='row-fluid'),
         )
-        
+
         super(ContenidoForm, self).__init__(*args, **kwargs)
-        
+
 
 
 

@@ -1,1 +1,4 @@
 */our_static
+*/*.pyc
+*/*/*.pyc
+.env

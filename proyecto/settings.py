@@ -12,26 +12,34 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import pdb
+from dotenv import load_dotenv
+from os.path import join, dirname
+
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+# load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fx2xsd*#*u_zg*ra@9%*%3zi9sj_jed$9uga85bw%#&5)7m(w^'
+SECRET_KEY = os.getenv('SECRET_KEY')
+DEBUG = bool(int(os.getenv('DEBUG', False)))
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',') if os.getenv('ALLOWED_HOSTS') else []
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = []
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = 'adoa3.unla@gmail.com'
-EMAIL_HOST_PASSWORD = 'adoa3unla'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
 
+TEMPLATE_DEBUG = DEBUG
 # Application definition
 
 INSTALLED_APPS = [
@@ -86,15 +94,12 @@ WSGI_APPLICATION = 'proyecto.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'adoa',
-        'PORT': '3307',
-        'USER' : 'root',
-        'HOST' : '/opt/lampp/var/mysql/mysql.sock'
+        'NAME': os.getenv('DATABASE_NAME'),
+        'PORT': os.getenv('DATABASE_PORT'),
+        'USER' : os.getenv('DATABASE_USER'),
+        'HOST' : os.getenv('DATABASE_HOST')
     }
 }
-
-
-
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
