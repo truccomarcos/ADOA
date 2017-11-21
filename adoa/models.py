@@ -14,7 +14,6 @@ class Patron(models.Model):
     def __unicode__(self):
        return self.titulo
 
-
 class ContenidoPatron(models.Model):
     orden = models.IntegerField()
     titulo = models.CharField(max_length=100)
@@ -26,10 +25,8 @@ class ContenidoPatron(models.Model):
         return self.descripcion
     def _get_orden(self):
         return self.orden
-
     def __unicode__(self):
        return self.titulo
-
 
 class ObjetoAprendizaje(models.Model):
     titulo=models.CharField(max_length=30)
@@ -50,7 +47,6 @@ class ObjetoAprendizaje(models.Model):
         return li
     def __unicode__(self):
        return self.titulo
-
 
 class Contenido(models.Model):
     orden = models.IntegerField()
@@ -93,8 +89,6 @@ class ElementoOrdenamiento(models.Model):
     ordenamiento = models.ForeignKey(Ordenamiento)
 
 #--------------------------------------------------------------------------
-
-
 class OpcionMultiple(Actividad):
     enunGeneral = models.CharField(max_length = 30)
     descripcion = RichTextField()
