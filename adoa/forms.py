@@ -10,9 +10,6 @@ from crispy_forms.bootstrap import *
 
 
 class ObjetoAprendizajeForm(forms.Form):
-    # class Meta:
-    #     model = ObjetoAprendizaje
-    #     fields = ["patron", "titulo" , "descripcion"]
     titulo = forms.CharField(max_length = 30)
     descripcion = forms.CharField(widget=CKEditorWidget())
     patron = forms.ModelChoiceField(queryset=Patron.objects.all())

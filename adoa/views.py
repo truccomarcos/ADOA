@@ -42,12 +42,67 @@ def ayuda():
     return render(request, 'ayuda.html', context)
 
 def inicioOA(request):
-    pdb.set_trace()
+    form = ObjetoAprendizajeForm(request.POST or None)
     context = {
         'title': 'Inicio OA',
-        'form': ObjetoAprendizajeForm(request.POST or None)
+        'form': form
     }
-    return render(request, 'inicioOA.html', context)
+    if form.is_valid():
+        oa = ObjetoAprendizaje(titulo=form.cleaned_data.get("titulo"),descripcion=form.cleaned_data.get("descripcion"), patron=form.cleaned_data.get("patron"),user= User.objects.get(username = request.user))
+        # pdb.set_trace()
+        contenidos = oa.setearContenidos()
+        contenidos = list(contenidos)
+        actividades = oa.setearActividad()
+        oa.contenido_set.add(*contenidos)
+        oa.actividad_set.add(*actividades)
+        # titulo1 = form.cleaned_data.get("titulo")
+        # descripcion1 = form.cleaned_data.get("descripcion")
+        # patron1 = form.cleaned_data.get("patron")
+        # user_request = request.user
+        # user = User.objects.get(username = user_request)
+        # oa = ObjetoAprendizaje(titulo = titulo1, descripcion = descripcion1, patron = patron1, user = user)
+        # if not ObjetoAprendizaje.objects.filter(pk=oa.pk).exists():
+        #     oa.save()
+        #     for contenido in oa.setearContenidos():
+        #         contenido.save()
+        #     for vof in oa.setearActividad():
+        #         print vof
+        #         vof.save()
+        # request.session["oa_pk"] = oa.pk
+
+        # return contenidosOA(request)
+        return contenidosOA(request, oa)
+    else:
+        return render(request, 'inicioOA.html', context)
+
+def contenidosOA(request, oa):
+    title = 'Contenidos OA'
+    pdb.set_trace()
+    formset = formset_factory(ContenidoForm, extra=oa.contenido_set.count())
+    context = {
+            "title": title,
+            "formset": formset,
+    }
+    return render(request,"contenidosOA.html", context)
+    # pdb.set_trace()
+    # for form in oa.contenido_set.all():
+    #     forms.append(ContenidoForm(request.POST or None))
+    # ContenidoFormSet = inlineformset_factory(ObjetoAprendizaje,Contenido,fields=('orden','titulo','descripcion','contenido','objetoAprendizaje'), extra = 0)
+    # formset = ContenidoFormSet(instance = oa)
+    #     oa = ObjetoAprendizaje.objects.get(pk=request.session["oa_pk"])
+    #     title = 'Contenidos OA'
+    #     ContenidoFormSet =  inlineformset_factory(ObjetoAprendizaje,Contenido,fields=('orden','titulo','descripcion','contenido','objetoAprendizaje'), extra = 0)
+    #     context = {
+    #             "title": title,
+    #         }
+    #
+    #     formset = ContenidoFormSet(instance = oa,)
+    #     context = {
+    #         "title": title,
+    #         "formset": formset,
+    #     }
+    #     return render(request,"contenidosOA.html", context)
+
 
 def patrones(request):
     context = {
@@ -55,6 +110,13 @@ def patrones(request):
         'patrones': Patron.objects.all()
     }
     return render(request, 'patrones.html', context)
+
+def detail(request, oa_id):
+    return HttpResponse("Objeto de Aprendizaje %s." % oa_id)
+
+def edit(request, oa_id):
+    return HttpResponse("Editando Objeto de Aprendizaje %s." % oa_id)
+
 # def archive(request):
 #     patrones = Patron.objects.all()
 #     mi_template = loader.get_template("archive.html")
@@ -95,7 +157,19 @@ def patrones(request):
 #         if not username:
 #             username = "New username"
 #         instance.username = username
-#         # if not instance.full_name:
+#         # if not instanc#     oa = ObjetoAprendizaje.objects.get(pk=request.session["oa_pk"])
+#     title = 'Contenidos OA'
+#     ContenidoFormSet =  inlineformset_factory(ObjetoAprendizaje,Contenido,fields=('orden','titulo','descripcion','contenido','objetoAprendizaje'), extra = 0)
+#     context = {
+#             "title": title,
+#         }
+#
+#     formset = ContenidoFormSet(instance = oa,)
+#     context = {
+#         "title": title,
+#         "formset": formset,
+#     }
+#     return render(request,"contenidosOA.html", context)e.full_name:
 #         #    instance.full_name = "Justin"
 #         instance.save()
 #         context = {

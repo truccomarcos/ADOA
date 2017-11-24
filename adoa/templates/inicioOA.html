@@ -24,24 +24,24 @@
 {% block content %}
 
 {% if  request.user.is_authenticated %}
-<form method='POST' action='{%url 'inicioOA'%'>
+<!-- <form method='POST' action='{%url 'inicioOA'%'> -->
   <table border="0" cellpadding="0" cellspacing="0"> <!-- patron", "titulo" , "descripcion"] -->
 	{% csrf_token %}
-  <!-- {% crispy form  %} -->
-  <h1>Patrón</h1>
+  {% crispy form  %}
+  <!-- <h1>Patrón</h1>
   {{form.patron}}
   <li><a href = "{% url 'patrones' %}">¿Qué patrón elegir? </a></li>
   <h1>Título</h1>
   {{form.titulo}}
   <h1>Descripción</h1>
-  {{form.descripcion}}
-  
+  {{form.descripcion}} -->
+
   </table>
-  <br>  
+  <br>
   <div>
-  <center><button type='submit' class='btn btn-success' >Guardar y contiunar</button></center>
+  <!-- <center><button type='submit' class='btn btn-success' >Guardar y contiunar</button></center> -->
 </div>
-</form>
+<!-- </form> -->
 
 {% else %}
 

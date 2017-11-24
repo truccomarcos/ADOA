@@ -1,0 +1,200 @@
+[
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 1,
+    "fields":
+    {
+        "orden":1,
+        "titulo":"Ideas Principales",
+        "descripcion":"Nombrar de forma resumida las ideas que se veran en el Objeto de Aprendizaje",
+        "patron":1
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 2,
+    "fields":
+    {
+        "orden": 2,
+        "titulo":"Desarrollo",
+        "descripcion":"Explicar de forma mas profunda cada uno de los temas introducidos en la seccion anterior",
+        "patron":1
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 3,
+    "fields":
+    {
+        "orden": 1,
+        "titulo":"Presentacion del tema",
+        "descripcion":"Explicacion del tema que se estudiara y el contexto",
+        "patron": 2
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 4,
+    "fields":
+    {
+        "orden": 2,
+        "titulo":"Explicacion del caso",
+        "descripcion":"Detallar una situacion real que represente un ejemplo de lo presentado",
+        "patron": 2
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 5,
+    "fields":
+    {
+        "orden": 3,
+        "titulo":"Deteccion de errores",
+        "descripcion":"Analisis de las fallas observadas en el caso explciado",
+        "patron": 2
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 6,
+    "fields":
+    {
+        "orden": 4,
+        "titulo":"Deteccion de aciertos",
+        "descripcion":"Analisis de los aciertos hallados en el caso explicado",
+        "patron": 2
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 7,
+    "fields":
+    {
+        "orden": 1,
+        "titulo": "Primera Aproximacion",
+        "descripcion": "Explicar el contexto en el que se vinculan los diferentes aspectos a aprender",
+        "patron": 3
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 8,
+    "fields":
+    {
+        "orden": 2,
+        "titulo": "Idea General",
+        "descripcion": "Desarrollar en forma sencilla los temas a dictar y las relaciones entre ellos",
+        "patron": 3
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 9,
+    "fields":
+    {
+        "orden": 3,
+        "titulo": "Detalles",
+        "descripcion": "Profundizar lo presentado en la seccion anterior",
+        "patron": 3
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 10,
+    "fields":
+    {
+        "orden": 4,
+        "titulo": "Conclusion",
+        "descripcion": "Explicacion del porque de la necesidad de estudiar todos los temas vistos en forma conjunta y otras apreciaciones pertinentes al tema",
+        "patron": 3
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 11,
+    "fields":
+    {
+        "orden": 1,
+        "titulo": "Situacion actual de la problema"   ,
+        "descripcion": "Explicacion del contexto y del problema",
+        "patron": 4
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 12,
+    "fields":
+    {
+        "orden": 2,
+        "titulo": "Sintesis de herramientas",
+        "descripcion":"Nombrar las diferentes herramientas factibles de ser aplicadas para encontrar la solucion del problema",
+        "patron": 4
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 13,
+    "fields":
+    {
+        "orden": 3,
+        "titulo": "Explicacion metodologica 1",
+        "descripcion": "Resolucion del problema con la tecnica 1",
+        "patron": 4
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 14,
+    "fields":
+    {
+        "orden": 4,
+        "titulo": "Explicacion metodologica 2",
+        "descripcion": "Resolucion del problema con la tecnica 2",
+        "patron": 4
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 15,
+    "fields":
+    {
+        "orden": 1,
+        "titulo": "Presentacion del tema",
+        "descripcion": "Explicacion del tema que se estudiara y el contexto",
+        "patron": 5
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 16,
+    "fields":
+    {
+        "orden": 2,
+        "titulo": "Explicacion del caso",
+        "descripcion":"Detallar una situacion real que represente un ejemplo de lo presentado",
+        "patron": 5
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 17,
+    "fields":
+    {
+        "orden": 3,
+        "titulo": "Deteccion de errores",
+        "descripcion":"Analisis de las fallas observadas en el caso explciado",
+        "patron": 5
+    }
+  },
+  {
+    "model":"adoa.ContenidoPatron",
+    "pk": 18,
+    "fields":
+    {
+        "orden": 4,
+        "titulo": "Deteccion de aciertos",
+        "descripcion": "Analisis de los aciertos hallados en el caso explicado",
+        "patron": 5
+    }
+  }
+]
