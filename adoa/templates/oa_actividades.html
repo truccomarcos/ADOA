@@ -23,9 +23,13 @@
 {% endblock %}
 
 {% block content %}
-
-  {% csrf_token %}
-  {% for form in formset %}
-    {% crispy form  %}
-  {% endfor %}
+  <form  method="post">
+    {% csrf_token %}
+    {% for actividad_form in actividad_formset %}
+          <div class="actividad-formset">
+            {% crispy actividad_form  %}
+          </div>
+    {% endfor %}
+    <div class='well'><center><button type='submit' class='btn btn-success'>Contiunar</button></center></div>
+  </form>
 {% endblock %}

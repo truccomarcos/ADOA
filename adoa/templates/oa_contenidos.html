@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<!-- {% crispy form %} -->
+
+
+
+{% block head_title %}Contenidos del OA | {{ block.super }}{% endblock %}
+{% block style %}
+
+.center {
+    margin: auto;
+    width: 10%;
+    padding: 10px;
+}
+
+{% endblock %}
+
+{% block jumbotron %}
+
+
+{% endblock %}
+
+{% block content %}
+<form method="post" class="uniForm" action="{% url 'oa_contenidos' %}">
+  {% csrf_token %}
+  {{ contenido_formset|crispy }}
+  <center><button type='submit' class='btn btn-success'>Contiunar</button></center>
+</form>
+{% endblock %}

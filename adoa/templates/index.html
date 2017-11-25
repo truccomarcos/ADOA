@@ -11,14 +11,14 @@
 {% block jumbotron %}
 <div class="container">
   <div class="jumbotron text-center">
-      <div class="row">                             
+      <div class="row">
         <div class="col-xs12"><img src="{% static 'img/index/nuevoindex1.png' %}" class="img-responsive" alt="Placeholder image"> </div>
       </div>
     </div>
   </div>
 
 {% endblock %}
-{% block content %}	
+{% block content %}
           <br></br>
    </center>
   </div>
@@ -42,12 +42,12 @@
 </div>
 <!-- /container -->
 
-  
+
 
   <!-- / CONTAINER-->
 </section>
 <div class="well">
-  <center><button type="button" class="btn btn-success" onclick="location.href='{% url 'inicioOA' %}'" >Crear OA</button></center>
+  <center><button type="button" class="btn btn-success" onclick="location.href='{% url 'oa_new' %}'" >Crear OA</button></center>
 </div>
 
 {% endblock %}

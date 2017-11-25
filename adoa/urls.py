@@ -11,11 +11,13 @@ urlpatterns = [
     url(r'^queEsOA/', queEsOA, name='queEsOA'),
     url(r'^queEsPatron/', queEsPatron, name='queEsPatron'),
     url(r'^ayuda/', ayuda, name='ayuda'),
-    url(r'^inicioOA/', inicioOA, name = 'inicioOA'),
+    url(r'^OA/new/$', oa_new, name='oa_new'),
+    url(r'^OA/new/contenidos/$', oa_contenidos, name='oa_contenidos'),
     url(r'^patrones/', patrones, name = 'patrones'),
-    url(r'^contenidosOA/', contenidosOA, name = 'contenidosOA'),
-    url(r'^OA/(?P<oa_id>[0-9]+)/$', detail, name='detail'),
-    url(r'^OA/(?P<oa_id>[0-9]+)/edit$', edit, name='edit'),
+    # url(r'^inicioOA/', inicioOA, name = 'inicioOA'),
+    # url(r'^contenidosOA/', contenidosOA, name = 'contenidosOA'),
+    # url(r'^OA/(?P<oa_id>[0-9]+)/$', detail, name='detail'),
+    # url(r'^OA/(?P<oa_id>[0-9]+)/edit$', edit, name='edit'),
 
     # ex: /polls/
     # url(r'^$', views.index, name='index'),

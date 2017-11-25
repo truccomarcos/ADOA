@@ -11,6 +11,11 @@ class Patron(models.Model):
     descripcion = RichTextField()
     problemas = RichTextField()
     solucion = RichTextField()
+    def get_contenidos(self):
+        contenidos = []
+        for contenido in self.contenidopatron_set.all():
+            contenidos.append(Contenido(titulo = contenido.titulo, descripcion = contenido.descripcion, orden = contenido.orden))
+        return contenidos
     def __unicode__(self):
        return self.titulo
 
@@ -19,37 +24,12 @@ class ContenidoPatron(models.Model):
     titulo = RichTextField()
     descripcion = RichTextField()
     patron = models.ForeignKey(Patron)
-    def _get_titulo(self):
-        return self.titulo
-    def _get_descripcion(self):
-        return self.descripcion
-    def _get_orden(self):
-        return self.orden
-    def __unicode__(self):
-       return self.titulo
 
 class ObjetoAprendizaje(models.Model):
     titulo = RichTextField()
     descripcion = RichTextField()
     patron = models.ForeignKey(Patron)
     user = models.ForeignKey(User)
-    contenidos = models.OneTom
-    # setearContenidos()
-    # setearActividad()
-    def setearContenidos(self):
-        li=[]
-        for contenido in self.patron.contenidopatron_set.all():
-            li.append(Contenido(titulo = contenido._get_titulo(), descripcion = contenido._get_descripcion(), orden = contenido._get_orden(),objetoAprendizaje = self))
-        # for contenidoPatron in ContenidoPatron.objects.all():
-        #     if contenidoPatron.patron == self.patron:
-        #         contenido = Contenido(titulo = contenidoPatron._get_titulo(), descripcion = contenidoPatron._get_descripcion(), orden = contenidoPatron._get_orden(),objetoAprendizaje = self)
-        #         li.append(contenido)
-        return li
-    def setearActividad(self,bulk=False):
-        li=[]
-        vof=VerdaderoFalso(titulo = "VerdaderoFalso", descripcion = "aoifjoiajs", enunGeneral = "oiafsoij", objetoAprendizaje= self)
-        li.append(vof)
-        return li
     def __unicode__(self):
        return self.titulo
 
