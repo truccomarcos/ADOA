@@ -15,6 +15,7 @@ from django.forms import formset_factory
 from django.forms.models import model_to_dict
 import json
 import pdb
+from bunch import bunchify
 
 
 # Create your views here.
@@ -70,6 +71,8 @@ def oa_contenidos(request):
             request.session['contenidos'] = contenidos
             request.method = ''
             return oa_actividades(request)
+        else:
+            return render(request, 'error.html')
     else:
         oa = request.session['oa']
         contenidos = request.session['contenidos']
@@ -80,22 +83,44 @@ def oa_contenidos(request):
 
 
 def oa_actividades(request):
-    ActividadesObjetoFormset = formset_factory(ContenidoForm, formset=ActividadesFormSet)
+    ActividadesObjetoFormset = formset_factory(ActividadForm, formset=ActividadesFormSet)
     if request.method=='POST':
         actividad_formset = ActividadesObjetoFormset(request.POST)
         if actividad_formset.is_valid():
             actividades = []
-            for actividad_from in actividad_formset:
+            for actividad_form in actividad_formset:
                 actividades.append(model_to_dict(actividad_form.save(commit=False)))
             request.session['actividades'] = actividades
             request.method = ''
-            return oa_actividades(request)
+            return oa_final(request)
+        else:
+            return render(request, 'error.html')
     else:
         oa = request.session['oa']
         actividad_formset = ActividadesObjetoFormset()
         return render(request, 'oa_actividades.html', { 'oa':oa, 'actividad_formset': actividad_formset })
 
-
+def oa_final(request):
+    if request.method=='POST':
+        pdb.set_trace()
+        oa = bunchify(request.session['oa'])
+        contenidos = bunchify(request.session['contenidos'])
+        actividades = bunchify(request.session['actividades'])
+        newOa = ObjetoAprendizaje(titulo= oa.titulo, descripcion= oa.descripcion, patron= Patron.objects.get(id=oa.patron), user= User.objects.get(username = request.user))
+        newOa.save()
+        for contenido in contenidos:
+            newOa.contenido_set.create(orden= contenido.orden, titulo= contenido.titulo, descripcion=contenido.descripcion, contenido= contenido.contenido)
+        for actividad in actividades:
+            newOa.actividad_set.create(titulo= actividad.titulo)
+        return render(request, 'oa_final.html', {'oa': oa, 'contenidos': oa.contenido_set, 'actividades': oa.actividad_set})
+        # newOa.contenido_set = newContenidos
+        # newOa.actividad_set = newActividades
+        pdb.set_trace()
+    else:
+        oa = request.session['oa']
+        contenidos = request.session['contenidos']
+        actividades = request.session['actividades']
+        return render(request, 'save_oa_details.html', {'oa': oa,'contenidos': contenidos, 'actividades':actividades})
 
 
 

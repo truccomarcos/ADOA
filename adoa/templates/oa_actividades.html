@@ -1,10 +1,7 @@
-{% extends "base.html" %}
+{% extends "base.html" %}<h1>Actividades:</h1>
 {% load crispy_forms_tags %}
 {% load staticfiles %}
 <!DOCTYPE html>
-<!-- {% crispy form %} -->
-
-
 
 {% block head_title %}Contenidos del OA | {{ block.super }}{% endblock %}
 {% block style %}
@@ -17,19 +14,13 @@
 
 {% endblock %}
 
-{% block jumbotron %}
-
-
-{% endblock %}
+{% block jumbotron %}{% endblock %}
 
 {% block content %}
-  <form  method="post">
-    {% csrf_token %}
-    {% for actividad_form in actividad_formset %}
-          <div class="actividad-formset">
-            {% crispy actividad_form  %}
-          </div>
-    {% endfor %}
-    <div class='well'><center><button type='submit' class='btn btn-success'>Contiunar</button></center></div>
-  </form>
+<h1>Actividades:</h1>
+<form method="post" class="uniForm" action="{% url 'oa_actividades' %}">
+  {% csrf_token %}
+  {{ actividad_formset|crispy }}
+  <center><button type='submit' class='btn btn-success'>Contiunar</button></center>
+</form>
 {% endblock %}

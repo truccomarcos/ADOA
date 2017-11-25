@@ -5,3 +5,4 @@ django-ckeditor
 django-registration-redux
 django-tinymce
 python-dotenv
+bunch

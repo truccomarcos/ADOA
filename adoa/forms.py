@@ -65,22 +65,15 @@ class ActividadForm(forms.ModelForm):
     class Meta:
         model = Contenido
         fields = ['titulo']
-    orden = forms.IntegerField()
     titulo = forms.CharField(max_length=100)
-    descripcion = forms.CharField(max_length=200,widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    contenido = forms.CharField(widget=CKEditorWidget())
     def __init__(self, *args, **kwargs):
         self.helper= FormHelper()
         self.helper.layout = Layout(
             Div(
-                Div('Contenido'),
-                Div('orden'),
                 Div('titulo'),
-                Div('descripcion'),
-                Div('contenido'),
             css_class='row-fluid'),
         )
-        super(ContenidoForm, self).__init__(*args, **kwargs)
+        super(ActividadForm, self).__init__(*args, **kwargs)
 
 
 class UserLoginForm(ModelForm):
@@ -88,7 +81,7 @@ class UserLoginForm(ModelForm):
         model = User
         fields = ['username', 'password', 'email']
 
-class VerdaderoFalsoForm(forms.Form):
+class VerdaderoFalsoForm(ActividadForm):
     enunGeneral =  forms.CharField(max_length = 30)
     descripcion = forms.CharField(widget=CKEditorWidget())
     # objetoAprendizaje = forms.ModelChoiceField(queryset=ObjetoAprendizaje.objects.all(), initial = ObjetoAprendizaje.objects.get(pk=1))

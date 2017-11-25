@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}<h1>Actividades:</h1>
 {% load crispy_forms_tags %}
 {% load staticfiles %}
 <!DOCTYPE html>
@@ -17,10 +17,9 @@
 {% block jumbotron %}{% endblock %}
 
 {% block content %}
-<h1>Contenidos:</h1>
-<form method="post" class="uniForm" action="{% url 'oa_contenidos' %}">
-  {% csrf_token %}
-  {{ contenido_formset|crispy }}
-  <center><button type='submit' class='btn btn-success'>Contiunar</button></center>
-</form>
+{% csrf_token %}
+<h1>Se ha guardado correctamente el objeto de aprendizaje:</h1>
+<h1>ID:</h1>
+{{ oa.id }}
+{% include '_oa_details.html' %}
 {% endblock %}

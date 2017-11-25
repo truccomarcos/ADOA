@@ -1,0 +1,22 @@
+<h1>Titulo</h1>
+{{ oa.titulo }}
+<h1>Descripcion</h1>
+{{ oa.Descripcion }}
+<h1>Patron</h1>
+{{ oa.patron }}
+<h1>contenidos</h1>
+{% for contenido in contenidos %}
+  <h2>Orden</h2>
+  {{ contenido.orden }}
+  <h2>Titulo</h2>
+  {{ contenido.titulo }}
+  <h2>Descripcion</h2>
+  {{ contenido.descripcion }}
+  <h2>Contenido</h2>
+  {{ contenido.contenido }}}
+{% endfor %}
+<h1>Actividades</h1>
+{% for actividad in actividades %}
+  <h2>Titulo</h2>
+  {{ actividad.titulo }}
+{% endfor %}
