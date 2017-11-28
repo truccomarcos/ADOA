@@ -7,23 +7,22 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
 <link rel="stylesheet" href= "{% static 'css/bootstrap.css' %}">
 
 
-    <title>{% block head_title %}ADOA{% endblock %}</title>
+<title>{% block head_title %}ADOA{% endblock %}</title>
 
-    {% include 'head_css.html' %}
+{% include 'head_css.html' %}
 
-      <style>
-      {% block style %}{% endblock %}
-      </style>
+<style>
+{% block style %}{% endblock %}
+</style>
 
 
-  </head>
+</head>
 
-  <body>
-  {% include 'navbar.html' %}
+<body>
+{% include 'navbar.html' %}
 
 {% block jumbotron %}
           

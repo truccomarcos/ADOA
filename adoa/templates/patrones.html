@@ -17,10 +17,19 @@
 {% endblock %}
 
 {% block jumbotron %}
+ {% if not request.user.is_authenticated %}
+  <div class="jumbotron text-center">
+    <div class="container">
+      <div class="row">
+       <!--  <div class="col-xs12"><img src="{% static 'img/index/redes.png' %}" class="img-responsive" alt="Placeholder image"> </div> -->
+      </div>
+    </div>
+  </div>
+ {% endif %}
+{% endblock %}   
+
 
  
-{% endblock %}
-
 {% block content %}
 	
           {% for patron in patrones %}
