@@ -4,10 +4,23 @@
 
 {% block head_title %}Registrar | {{ block.super }}{% endblock %}
 
+{% block jumbotron %}
+ {% if not request.user.is_authenticated %}
+  <div class="jumbotron text-center">
+    <div class="container">
+      <div class="row">
+      
+      </div>
+    </div>
+  </div>
+ {% endif %}
+{% endblock %}
+
 {% block content %}
+<nav class="navbar navbar-light bg-faded">
 <div class='row'>
 <div class='col-sm-6 col-sm-offset-3'>
-<h1>Register for free!</h1>
+<center><h1>¡ Regístrese gratis !</h1></center>
 <form method="post" action=".">
   {% csrf_token %}
   {{ form|crispy }}
@@ -19,9 +32,10 @@
 <hr/>
 <div class='row'>
 <div class='col-sm-6 col-sm-offset-3 text-align-center'>
-<p>Need to <a href="{% url 'auth_login' %}">Login</a>?</p>
+<p>Si ya tenés una cuenta, <a href="{% url 'auth_login' %}">ingresá aquí</a>?</p>
 </div>
 </div>
+</nav>
 
 
 {% endblock %}

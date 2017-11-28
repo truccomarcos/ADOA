@@ -3,16 +3,39 @@
 
 {% block title %}{% trans "Log in" %}{% endblock %}
 
+{% block jumbotron %}
+ {% if not request.user.is_authenticated %}
+  <div class="jumbotron text-center">
+    <div class="container">
+      <div class="row">
+      
+      </div>
+    </div>
+  </div>
+ {% endif %}
+{% endblock %}
+
 {% block content %}
+<nav class="navbar navbar-light bg-faded">
+<hr/>
+<div class='row'>
+<div class='col-sm-6 col-sm-offset-3 text-align-center'>
 <form method="post" action="">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="{% trans 'Log in' %}" />
     <input type="hidden" name="next" value="{{ next }}" />
 </form>
-
-<p>{% trans "Forgot your password?" %} <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>.</p>
-<p>{% trans "Not a member?" %} <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>.</p>
+</div>
+</div>
+<hr/>
+<div class='row'>
+<div class='col-sm-6 col-sm-offset-3 text-align-center'>
+<p>{% trans "¿Olvidaste tu contraseña?" %} <a href="{% url 'auth_password_reset' %}">{% trans "Resetéala" %}</a>.</p>
+<p>{% trans "¿No tienes una cuenta?" %} <a href="{% url 'registration_register' %}">{% trans "Regístrate" %}</a>.</p>
+</div>
+</div>
+</nav>
 {% endblock %}
 
 

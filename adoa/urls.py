@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^index/', index, name='index'),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^queEsOA/', queEsOA, name='queEsOA'),
-    url(r'^queEsPatron/', queEsPatron, name='queEsPatron'),
+    url(r'^queEsPatron/$', queEsPatron, name='queEsPatron'),
     url(r'^ayuda/', ayuda, name='ayuda'),
     url(r'^OA/new/$', oa_new, name='oa_new'),
     url(r'^OA/new/contenidos/$', oa_contenidos, name='oa_contenidos'),

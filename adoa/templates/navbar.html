@@ -9,7 +9,7 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <div id="navbar" class="navbar-collapse collapse">
-<div><a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'img/index/logov3.8.png' %}"  WIDTH=60, HEIGTH=60  /></a></div>
+<div><a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'img/index/logo.png' %}"  WIDTH=60, HEIGTH=60  /></a></div>
           <ul class="nav navbar-nav">
 
             <li><a href="{% url 'index' %}">Home</a></li>
@@ -20,7 +20,7 @@
 
           <ul class="nav navbar-nav navbar-right">
           {% if request.user.is_authenticated %}
-            <li><a href="{% url 'index' %}">Bienvenido {{ user.get_username }}</a></li>
+            <li><a href="{% url 'index' %}">Bienvenido &nbsp {{ user.get_username }}</a></li>
             <li><a href="{% url 'auth_logout' %}">Cerrar Sesión</a></li>
             {% else %}
             <li><a href="{% url 'registration_register' %}">Registrarse</a></li>
