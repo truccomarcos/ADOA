@@ -19,7 +19,8 @@
 {% block content %}
 <h1>Objecto de aprendizaje:</h1>
 <form method="post" class="uniForm" action="{% url 'oa_final' %}">
+  {% csrf_token %}
   {% include '_oa_details.html' %}
-<center><button type='submit' class='btn btn-success'>Finalizar</button></center>
+  <center><button type='submit' class='btn btn-success'>Finalizar</button></center>
 </form>
 {% endblock %}

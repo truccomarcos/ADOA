@@ -102,26 +102,29 @@ def oa_actividades(request):
 
 def oa_final(request):
     if request.method=='POST':
-        pdb.set_trace()
         oa = bunchify(request.session['oa'])
         contenidos = bunchify(request.session['contenidos'])
         actividades = bunchify(request.session['actividades'])
         newOa = ObjetoAprendizaje(titulo= oa.titulo, descripcion= oa.descripcion, patron= Patron.objects.get(id=oa.patron), user= User.objects.get(username = request.user))
         newOa.save()
+        pdb.set_trace()
         for contenido in contenidos:
             newOa.contenido_set.create(orden= contenido.orden, titulo= contenido.titulo, descripcion=contenido.descripcion, contenido= contenido.contenido)
         for actividad in actividades:
             newOa.actividad_set.create(titulo= actividad.titulo)
-        return render(request, 'oa_final.html', {'oa': oa, 'contenidos': oa.contenido_set, 'actividades': oa.actividad_set})
-        # newOa.contenido_set = newContenidos
-        # newOa.actividad_set = newActividades
-        pdb.set_trace()
+        return render(request, 'oa_final.html', {'oa': model_to_dict(newOa), 'contenidos': contenidos, 'actividades': actividades})
     else:
         oa = request.session['oa']
         contenidos = request.session['contenidos']
         actividades = request.session['actividades']
         return render(request, 'save_oa_details.html', {'oa': oa,'contenidos': contenidos, 'actividades':actividades})
-
+        
+def patrones(request):
+    context = {
+        'title': 'Patrones',
+        'patrones': Patron.objects.all()
+    }
+    return render(request, 'patrones.html', context)
 
 
     # return render(request, 'error.html')
@@ -201,12 +204,7 @@ def oa_final(request):
 #     #     return render(request,"contenidosOA.html", context)
 #
 #
-def patrones(request):
-    context = {
-        'title': 'Patrones',
-        'patrones': Patron.objects.all()
-    }
-    return render(request, 'patrones.html', context)
+
 
 # def detail(request, oa_id):
 #     return HttpResponse("Objeto de Aprendizaje %s." % oa_id)
