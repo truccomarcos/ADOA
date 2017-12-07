@@ -4,8 +4,14 @@ from django.contrib import admin
 from django.contrib.auth.models import *
 from ckeditor.fields import RichTextField
 
-
-# Create your models here.
+ACTIVIDAD_TYPE_CHOICES = (
+    ('0', 'VerdaderoFalso'),
+    ('1', 'Ordenamiento'),
+    ('2', 'OpcionMultiple'),
+    ('3', 'Identificacion'),
+    ('4', 'Asociacion'),
+)
+#--------------------------------------------------------------------------
 class Patron(models.Model):
     titulo = RichTextField()
     descripcion = RichTextField()
@@ -18,13 +24,13 @@ class Patron(models.Model):
         return contenidos
     def __unicode__(self):
        return self.titulo
-
+#--------------------------------------------------------------------------
 class ContenidoPatron(models.Model):
     orden = models.IntegerField()
     titulo = RichTextField()
     descripcion = RichTextField()
     patron = models.ForeignKey(Patron)
-
+#--------------------------------------------------------------------------
 class ObjetoAprendizaje(models.Model):
     titulo = RichTextField()
     descripcion = RichTextField()
@@ -32,7 +38,7 @@ class ObjetoAprendizaje(models.Model):
     user = models.ForeignKey(User)
     def __unicode__(self):
        return self.titulo
-
+#--------------------------------------------------------------------------
 class Contenido(models.Model):
     orden = models.IntegerField()
     titulo = RichTextField()
@@ -41,69 +47,38 @@ class Contenido(models.Model):
     objetoAprendizaje = models.ForeignKey(ObjetoAprendizaje)
     def __unicode__(self):
        return self.titulo
-
 #--------------------------------------------------------------------------
-
 class Actividad(models.Model):
-    titulo = RichTextField()
+    enunciado = RichTextField()
+    tipo = models.CharField(max_length=1, choices=ACTIVIDAD_TYPE_CHOICES, null=True)
     objetoAprendizaje = models.ForeignKey(ObjetoAprendizaje)
     def __unicode__(self):
        return self.titulo
-
 #--------------------------------------------------------------------------
-
-class VerdaderoFalso(Actividad):
-    enunGeneral =  RichTextField()
-    descripcion = RichTextField()
-
-
 class ElementoVoF(models.Model):
     enunciado = RichTextField()
     verdad = models.BooleanField()
-    VoF = models.ForeignKey(VerdaderoFalso)
-
+    actividad = models.ForeignKey(Actividad, null=True)
 #--------------------------------------------------------------------------
-
-class Ordenamiento(Actividad):
-    enunGeneral =  RichTextField()
-    descripcion = RichTextField()
-
 class ElementoOrdenamiento(models.Model):
     enunciado = RichTextField()
     orden = models.IntegerField()
-    ordenamiento = models.ForeignKey(Ordenamiento)
-
+    actividad = models.ForeignKey(Actividad, null=True)
 #--------------------------------------------------------------------------
-class OpcionMultiple(Actividad):
-    enunGeneral = RichTextField()
-    descripcion = RichTextField()
-
 class ElementoOpcionMultiple(models.Model):
     enunciado = RichTextField()
     correcta = RichTextField()
     incorrecta1 = RichTextField()
     incorrecta2 = RichTextField()
     incorrecta3 = RichTextField()
-    multiple = models.ForeignKey(OpcionMultiple)
-
+    actividad = models.ForeignKey(Actividad, null=True)
 #-------------------------------------------------------------
-
-class Identificacion(Actividad):
-    enunGeneral = RichTextField()
-    descripcion = RichTextField()
-
 class ElementoIdentificacion(models.Model):
     enunciado = RichTextField()
     correcto = models.BooleanField()
-    identificacion = models.ForeignKey(Identificacion)
-
+    actividad = models.ForeignKey(Actividad, null=True)
 #----------------------------------------------------------
-
-class Asociacion(Actividad):
-    enunGeneral = RichTextField()
-    descripcion = RichTextField()
-
 class ElementoAsosiacion(models.Model):
     enunciado = RichTextField()
     imagen = models.ImageField()
-    asociacion = models.ForeignKey(Asociacion)
+    actividad = models.ForeignKey(Actividad, null=True)

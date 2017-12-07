@@ -18,5 +18,7 @@
 <h1>Actividades</h1>
 {% for actividad in actividades %}
   <h2>Titulo</h2>
-  {{ actividad.titulo }}
+  {{ actividad.enunciado }}
+  <h2>Tipo</h2>
+  {{ actividad.tipo }}
 {% endfor %}

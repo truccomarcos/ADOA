@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>{{ objetoaprendizaje.titulo | safe }}</h1>
+<p>Patron: <i>{{ objetoaprendizaje.patron }}</i></p>
+<p>Descripcion: {{ objetoaprendizaje.descripcion| safe }}</p>
+<p>
+    <a href="{% url "adoa:list" %}">Regresar</a>
+</p>
+{% endblock %}

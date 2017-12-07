@@ -1,5 +1,5 @@
 from django.template import loader, Context
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from adoa.models import *
 from django.shortcuts import render_to_response
@@ -16,386 +16,226 @@ from django.forms.models import model_to_dict
 import json
 import pdb
 from bunch import bunchify
+from django.views import View
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic import ListView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import (
+    CreateView,
+    UpdateView,
+    DeleteView
+)
+from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
 
+from .models import ObjetoAprendizaje
 
-# Create your views here.
-def index(request):
-    context = {
-        'title': 'index',
-        'form': UserLoginForm(request.POST or None)
-    }
-    return render(request, 'index.html', context)
+class ObjetoAprendizajeList(ListView):
+    model = ObjetoAprendizaje
 
-def queEsOA():
-    context = {
-        'title':'Que es un Objeto de Aprendizaje?',
-    }
-    return render(request, 'queEsOa.html', context)
+class ObjetoAprendizajeDetail(DetailView):
+    model = ObjetoAprendizaje
 
-def queEsPatron():
-    context = {
-        'title':'Que es un Patron de Aprendizaje?',
-    }
-    return render(request, 'queEsPatron.html', context)
+class ObjetoAprendizajeCreation(CreateView):
+    model = ObjetoAprendizaje
+    form_class = ObjetoAprendizajeForm
+    def form_valid(self, form):
+        objetoAprendizaje = form.save(commit=False)
+        objetoAprendizaje.user = self.request.user
+        objetoAprendizaje.save()
+        return HttpResponseRedirect(reverse_lazy('adoa:contenidos', kwargs={'pk':objetoAprendizaje.id}))
 
-def ayuda():
-    context = {
-        'title':'Ayuda',
-    }
-    return render(request, 'ayuda.html', context)
+class ContenidosCreation(View):
+    model = Contenido
+    formset_class = formset_factory(ContenidoForm)
+    template_name = 'adoa/contenido_form.html'
+    def get(self, request,pk):
+            oa = request.session['oa']
+            contenidos = request.session['contenidos']
+            contenidos_data = [{'orden': int(c['orden']), 'titulo': str(c['titulo']), 'descripcion': str(c['descripcion']), 'contenido': str(c['contenido'])}
+                            for c in request.session['contenidos']]
+            formset = self.formset_class(initial = contenidos_data)
+            return render(request, self.template_name, { 'oa':oa, 'contenido_formset': formset })
 
-def oa_new(request):
-    form = ObjetoAprendizajeForm(request.POST)
-    if request.method == 'POST':
-        if form.is_valid():
-            oa = form.save(commit=False)
-            contenidos = oa.patron.get_contenidos()
-            contenidos_serial = []
-            for contenido in contenidos:
-                contenidos_serial.append(model_to_dict(contenido))
-            request.session['oa'] = model_to_dict(oa)
-            request.session['contenidos'] = contenidos_serial
-            request.method=''
-            return oa_contenidos(request)
-    else:
-        return render (request, 'oa_edit.html', { 'form':form })
-
-def oa_contenidos(request):
-    ContenidosObjetoFormset = formset_factory(ContenidoForm, formset=ContenidosFormSet)
-    if request.method=='POST':
-        contenido_formset = ContenidosObjetoFormset(request.POST)
-        if contenido_formset.is_valid():
-            contenidos = []
-            for contenido_form in contenido_formset:
-                contenidos.append(model_to_dict(contenido_form.save(commit=False)))
-            request.session['contenidos'] = contenidos
-            request.method = ''
-            return oa_actividades(request)
-        else:
-            return render(request, 'error.html')
-    else:
-        oa = request.session['oa']
-        contenidos = request.session['contenidos']
-        contenidos_data = [{'orden': int(c['orden']), 'titulo': str(c['titulo']), 'descripcion': str(c['descripcion']), 'contenido': str(c['contenido'])}
-                        for c in request.session['contenidos']]
-        contenido_formset = ContenidosObjetoFormset(initial = contenidos_data)
-        return render(request, 'oa_contenidos.html', { 'oa':oa, 'contenido_formset': contenido_formset })
-
-
-def oa_actividades(request):
-    ActividadesObjetoFormset = formset_factory(ActividadForm, formset=ActividadesFormSet)
-    if request.method=='POST':
-        actividad_formset = ActividadesObjetoFormset(request.POST)
-        if actividad_formset.is_valid():
-            actividades = []
-            for actividad_form in actividad_formset:
-                actividades.append(model_to_dict(actividad_form.save(commit=False)))
-            request.session['actividades'] = actividades
-            request.method = ''
-            return oa_final(request)
-        else:
-            return render(request, 'error.html')
-    else:
-        oa = request.session['oa']
-        actividad_formset = ActividadesObjetoFormset()
-        return render(request, 'oa_actividades.html', { 'oa':oa, 'actividad_formset': actividad_formset })
-
-def oa_final(request):
-    if request.method=='POST':
-        oa = bunchify(request.session['oa'])
-        contenidos = bunchify(request.session['contenidos'])
-        actividades = bunchify(request.session['actividades'])
-        newOa = ObjetoAprendizaje(titulo= oa.titulo, descripcion= oa.descripcion, patron= Patron.objects.get(id=oa.patron), user= User.objects.get(username = request.user))
-        newOa.save()
+    def get_context_data(self, **kwargs):
+        context = super(ContenidosCreation, self).get_context_data(**kwargs)
+        context['pk'] = self.kwargs['pk']
+        context['form-template'] = ContenidoForm
+        return context
+    def get_initial(self):
+        pk = self.kwargs['pk']
+        objetoAprendizaje = ObjetoAprendizaje.objects.get(pk=pk)
+        initial = objetoAprendizaje.patron.contenidopatron_set.values()
+        return initial
+    def form_valid(self, form):
         pdb.set_trace()
+        pk = self.kwargs['pk']
+        oa = ObjetoAprendizaje.objects.get(pk=pk)
+        contenidos = form.save(commit=False)
         for contenido in contenidos:
-            newOa.contenido_set.create(orden= contenido.orden, titulo= contenido.titulo, descripcion=contenido.descripcion, contenido= contenido.contenido)
-        for actividad in actividades:
-            newOa.actividad_set.create(titulo= actividad.titulo)
-        return render(request, 'oa_final.html', {'oa': model_to_dict(newOa), 'contenidos': contenidos, 'actividades': actividades})
-    else:
-        oa = request.session['oa']
-        contenidos = request.session['contenidos']
-        actividades = request.session['actividades']
-        return render(request, 'save_oa_details.html', {'oa': oa,'contenidos': contenidos, 'actividades':actividades})
-        
-def patrones(request):
-    context = {
-        'title': 'Patrones',
-        'patrones': Patron.objects.all()
-    }
-    return render(request, 'patrones.html', context)
+            contenido.objetoAprendizaje = oa
+        contenidos.save()
+        return reverse_lazy('adoa:list')
 
 
-    # return render(request, 'error.html')
 #
-# def inicioOA(request):
 #
-#     if request.method == 'POST':
-#         form = ObjetoAprendizajeForm(request.POST or None)
-#         context = {
+# class CreateFatherView(CreateView):
+#     template_name = 'father_create.html'
+#     model = Father
+#     form_class = FatherForm # the parent object's form
 #
-#             'title': 'Inicio OA',
-#             'form': form
-#         }
-#         if form.is_valid():
-#             oa = ObjetoAprendizaje(titulo=form.cleaned_data.get("titulo"),descripcion=form.cleaned_data.get("descripcion"), patron=form.cleaned_data.get("patron"),user= User.objects.get(username = request.user))
-#             # pdb.set_trace()
-#             contenidos = list(oa.setearContenidos())
-#             actividades = list(oa.setearActividad())
-#             context = {
-#                     'oa' : oa,
-#                     'contenidos': contenidos,
-#                     'actividades': actividades
-#                 }
-#         # titulo1 = form.cleaned_data.get("titulo")
-#         # descripcion1 = form.cleaned_data.get("descripcion")
-#         # patron1 = form.cleaned_data.get("patron")
-#         # user_request = request.user
-#         # user = User.objects.get(username = user_request)
-#         # oa = ObjetoAprendizaje(titulo = titulo1, descripcion = descripcion1, patron = patron1, user = user)
-#         # if not ObjetoAprendizaje.objects.filter(pk=oa.pk).exists():
-#         #     oa.save()
-#         #     for contenido in oa.setearContenidos():
-#         #         contenido.save()
-#         #     for vof in oa.setearActividad():
-#         #         print vof
-#         #         vof.save()
-#         # request.session["oa_pk"] = oa.pk
+#     # On successful form submission
+#     def get_success_url(self):
+#         return reverse('father-created')
 #
-#         # return contenidosOA(request)
-#             return contenidosOA(request)
+#     # Validate forms
+#     def form_valid(self, form):
+#         ctx = self.get_context_data()
+#         inlines = ctx['inlines']
+#         if inlines.is_valid() and form.is_valid():
+#             self.object = form.save() # saves Father and Children
+#             return redirect(self.get_success_url())
 #         else:
-#             return render(request,'error.html')
-#     else:
-#         return render(request, 'inicioOA.html', context)
+#             return self.render_to_response(self.get_context_data(form=form))
 #
-# def contenidosOA(request):
-#     title = 'Contenidos OA'
-#     # formset = formset_factory(ContenidoForm, extra=oa.contenido_set.count())
-#     pdb.set_trace()
-#     formset = formset_factory(ContenidoForm, formset=ContenidosFormSet )
-#     if request.method == 'POST':
-#         lala = 0
-#         return render(request, "error.html")
-#     else:
-#         context = {
-#                 "title": title,
-#                 "formset": formset,
-#         }
-#         return render(request,"contenidosOA.html", context)
-#     # .set_trace()
-#     # for form in oa.contenido_set.all():
-#     #     forms.append(ContenidoForm(request.POST or None))
-#     # ContenidoFormSet = inlineformset_factory(ObjetoAprendizaje,Contenido,fields=('orden','titulo','descripcion','contenido','objetoAprendizaje'), extra = 0)
-#     # formset = ContenidoFormSet(instance = oa)
-#     #     oa = ObjetoAprendizaje.objects.get(pk=request.session["oa_pk"])
-#     #     title = 'Contenidos OA'
-#     #     ContenidoFormSet =  inlineformset_factory(ObjetoAprendizaje,Contenido,fields=('orden','titulo','descripcion','contenido','objetoAprendizaje'), extra = 0)
-#     #     context = {
-#     #             "title": title,
-#     #         }
-#     #
-#     #     formset = ContenidoFormSet(instance = oa,)
-#     #     context = {
-#     #         "title": title,
-#     #         "formset": formset,
-#     #     }
-#     #     return render(request,"contenidosOA.html", context)
+#     def form_invalid(self, form):
+#         return self.render_to_response(self.get_context_data(form=form))
 #
-#
+#     # We populate the context with the forms. Here I'm sending
+#     # the inline forms in `inlines`
+#     def get_context_data(self, **kwargs):
+#         ctx = super(CreateFatherView, self).get_context_data(**kwargs)
+#         if self.request.POST:
+#             ctx['form'] = FatherForm(self.request.POST)
+#             ctx['inlines'] = FatherInlineFormSet(self.request.POST)
+#         else:
+#             ctx['form'] = Father()
+#             ctx['inlines'] = FatherInlineFormSet()
+#         return ctx
 
 
-# def detail(request, oa_id):
-#     return HttpResponse("Objeto de Aprendizaje %s." % oa_id)
-#
-# def edit(request, oa_id):
-#     return HttpResponse("Editando Objeto de Aprendizaje %s." % oa_id)
 
-# def archive(request):
-#     patrones = Patron.objects.all()
-#     mi_template = loader.get_template("archive.html")
-#     mi_contexto = Context({'patrones': patrones})
-#     return HttpResponse(mi_template.render(mi_contexto))
+
+class ObjetoAprendizajeUpdate(UpdateView):
+    model = ObjetoAprendizaje
+    success_url = reverse_lazy('adoa:list')
+    fields = ['titulo', 'patron', 'descripcion']
+
+class ObjetoAprendizajeDelete(DeleteView):
+    model = ObjetoAprendizaje
+    success_url = reverse_lazy('adoa:list')
+
+
+
+
+class Index(View):
+    def get(self,request):
+        context = {
+            'title': 'index',
+            'form': UserLoginForm(request.POST or None)
+        }
+        return render(request, 'index.html', context)
+
+class QueEsOA(View):
+    def get(self,request):
+        context = {
+            'title':'Que es un Objeto de Aprendizaje?',
+        }
+        return render(request, 'queEsOA.html', context)
+
+class QueEsPatron(View):
+    def get(self,request):
+        context = {
+            'title':'Que es un Patron de Aprendizaje?',
+        }
+        return render(request, 'queEsPatron.html', context)
+
+class Ayuda(View):
+    def get(self,request):
+        context = {
+            'title':'Ayuda',
+        }
+        return render(request, 'ayuda.html', context)
+
+class PatronesView(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'title': 'Patrones',
+            'patrones': Patron.objects.all()
+        }
+        return render(request, 'patrones.html', context)
+
+# class OAFormView(View):
+#     form_class = ObjetoAprendizajeForm
+#     template_name = 'oa_edit.html'
+#     def get(self, request, *args, **kwargs):
+#         form = self.form_class()
+#         return render(request, self.template_name, {'form': form})
+#     def post(self, request, *args, **kwargs):
+#         form = self.form_class(request.POST)
+#         if form.is_valid():
+#             oa = form.save(*)
+#             contenidos = oa.patron.get_contenidos()
+#             contenidos_serial = []
+#             for contenido in contenidos:
+#                 contenidos_serial.append(model_to_dict(contenido))
+#             request.session['oa'] = model_to_dict(oa)
+#             request.session['contenidos'] = contenidos_serial
+#             return redirect('oa_contenidos')
+#         return render(request, self.template_name, {'form': form})
 #
-# def ayuda(request):
-#     title = 'Sign Up Now'
-#     context = {
-#         "title": title,
-#      }
-#     return render (request,"ayuda.html",context)
+# class OAContenidosFormView(View):
+#     formset_class = formset_factory(ContenidoForm, formset=ContenidosFormSet)
+#     template_name = 'oa_contenidos.html'
+#     def get(self, request, *args, **kwargs):
+#         oa = request.session['oa']
+#         contenidos = request.session['contenidos']
+#         contenidos_data = [{'orden': int(c['orden']), 'titulo': str(c['titulo']), 'descripcion': str(c['descripcion']), 'contenido': str(c['contenido'])}
+#                         for c in request.session['contenidos']]
+#         formset = self.formset_class(initial = contenidos_data)
+#         return render(request, self.template_name, { 'oa':oa, 'contenido_formset': formset })
+#     def post(self, request, *args, **kwargs):
+#         contenido_formset = self.formset_class(request.POST)
+#         if contenido_formset.is_valid():
+#             contenidos = []
+#             for contenido_form in contenido_formset:
+#                 contenidos.append(model_to_dict(contenido_form.save(commit=False)))
+#             request.session['contenidos'] = contenidos
+#             return redirect('oa_actividades')
+#         return render(request, self.template_name, { 'oa':oa, 'contenido_formset': contenido_formset })
 #
-# def queEsOA(request):
-#     title = 'Sign Up Now'
-#     context = {
-#         "title": title,
-#      }
-#     return render (request,"queEsOA.html",context)
+# class OAActividadesFormView(View):
+#     formset_class = formset_factory(ActividadForm, formset=ActividadesFormSet)
+#     template_name = 'oa_actividades.html'
+#     def get(self, request, *args, **kwargs):
+#         oa = request.session['oa']
+#         formset = self.formset_class()
+#         return render(request, self.template_name, { 'oa':oa, 'actividades_formset': formset })
+#     def post(self, request, *args, **kwargs):
+#         actividades_formset = self.formset_class(request.POST)
+#         if actividades_formset.is_valid():
+#             actividades = []
+#             for actividad_form in actividades_formset:
+#                 actividades.append(model_to_dict(actividad_form.save(commit=False)))
+#             request.session['actividades'] = actividades
+#             return redirect('oa_final')
+#         return render(request, self.template_name, { 'oa':oa, 'actividades_formset': actividades_formset })
 #
-# def queEsPatron(request):
-#     title = 'Sign Up Now'
-#     context = {
-#         "title": title,
-#      }
-#     return render (request,"queEsPatron.html",context)
-#
-# def index(request):
-#     title = 'Sign Up Now'
-#     form = UserLoginForm(request.POST or None)
-#     context = {
-#         "title": title,
-#         "form": form
-#     }
-#     if form.is_valid():
-#         instance = form.save(commit=False)
-#         username = form.cleaned_data.get("username")
-#         if not username:
-#             username = "New username"
-#         instance.username = username
-#         # if not instanc#     oa = ObjetoAprendizaje.objects.get(pk=request.session["oa_pk"])
-#     title = 'Contenidos OA'
-#     ContenidoFormSet =  inlineformset_factory(ObjetoAprendizaje,Contenido,fields=('orden','titulo','descripcion','contenido','objetoAprendizaje'), extra = 0)
-#     context = {
-#             "title": title,
-#         }
-#
-#     formset = ContenidoFormSet(instance = oa,)
-#     context = {
-#         "title": title,
-#         "formset": formset,
-#     }
-#     return render(request,"contenidosOA.html", context)e.full_name:
-#         #    instance.full_name = "Justin"
-#         instance.save()
-#         context = {
-#             "title": "Thank you"
-#         }
-#     # if request.user.is_authenticated() and request.user.is_staff:
-#     #     queryset = User.objects.all()
-#     #     context = {
-#     #         "queryset": queryset
-#     #     }
-#     return render(request, "index.html", context)
-#
-# def inicioOA(request):
-#     title = 'Inicio OA'
-#     form = ObjetoAprendizajeForm(request.POST or None)
-#     context = {
-#         "title": title,
-#         "form": form
-#     }
-#     if form.is_valid():
-#         titulo1 = form.cleaned_data.get("titulo")
-#         descripcion1 = form.cleaned_data.get("descripcion")
-#         patron1 = form.cleaned_data.get("patron")
-#         user_request = request.user
-#         user = User.objects.get(username = user_request)
-#         oa = ObjetoAprendizaje(titulo = titulo1, descripcion = descripcion1, patron = patron1, user = user)
-#
-#         if not ObjetoAprendizaje.objects.filter(pk=oa.pk).exists():
-#             oa.save()
-#             for contenido in oa.setearContenidos():
-#                 contenido.save()
-#             for vof in oa.setearActividad():
-#                 print vof
-#                 vof.save()
-#         request.session["oa_pk"] = oa.pk
-#
-#         context = {
-#             "title": "Thank you",
-#              "oa": oa
-#         }
-#
-#         return contenidosOA(request)
-#     else:
-#         return render(request, "inicioOA.html", context)
-#
-# def contenidosOA(request):
-#     oa = ObjetoAprendizaje.objects.get(pk=request.session["oa_pk"])
-#     title = 'Contenidos OA'
-#     ContenidoFormSet =  inlineformset_factory(ObjetoAprendizaje,Contenido,fields=('orden','titulo','descripcion','contenido','objetoAprendizaje'), extra = 0)
-#     context = {
-#             "title": title,
-#         }
-#
-#     formset = ContenidoFormSet(instance = oa,)
-#     context = {
-#         "title": title,
-#         "formset": formset,
-#     }
-#     return render(request,"contenidosOA.html", context)
-#
-# def guardarcontenidosOA(request):
-#     ContenidoFormSet =  inlineformset_factory(ObjetoAprendizaje,Contenido,fields=('orden','titulo','descripcion','contenido','objetoAprendizaje'), extra = 0)
-#     oa = ObjetoAprendizaje.objects.get(pk=request.session["oa_pk"])
-#     formset = ContenidoFormSet(request.POST, instance = oa)
-#     title = 'Guardar contenidos OA'
-#     context = {
-#             "title": title,
-#         }
-#     for form in formset:
-#         print form.as_p
-#
-#     if formset.is_valid():
-#         for f_form in formset:
-#             if f_form.is_valid():
-#                 orden =  f_form.cleaned_data.get("orden")
-#                 titulo = f_form.cleaned_data.get("titulo")
-#                 descripcion = f_form.cleaned_data.get("descripcion")
-#                 content = f_form.cleaned_data.get("contenido")
-#                 objetoAprendizaje = f_form.cleaned_data.get("objetoAprendizaje")
-#                 contenido = Contenido(orden = orden, titulo = titulo, descripcion = descripcion,contenido = content, objetoAprendizaje = objetoAprendizaje)
-#                 contenido.save()
-#             return actividades(request)
-#     else:
-#         return ayuda(request)
-#
-# def patrones(request):
-#     title = 'Patrones'
-#     patrones = Patron.objects.all()
-#     form = PatronForm()
-#     context = {
-#         "title":title,
-#         "form": form,
-#         "patrones": patrones and request.user.is_staff:
-#     #     queryset = User.objects.all()
-#     #     context = {
-#     #         "queryset": queryset
-#     #     }
-#     }
-#     return render(request,"patrones.html",context)
-#
-# def actividades(request):
-#     title = 'actividades'
-#     ActividadFormset = inlineformset_factory(ObjetoAprendizaje,VerdaderoFalso,fields=('titulo','enunGeneral','descripcion','objetoAprendizaje'), extra = 0)
-#     oa = ObjetoAprendizaje.objects.get(pk=request.session["oa_pk"])
-#     formset = ActividadFormset(instance = oa)
-#     context = {
-#         "title": title,
-#         "formset": formset,
-#     }
-#     return render(request,"actividades.html", context)
-#
-#
-# def guardarActividadesOA(request):
-#     ActividadFormset = inlineformset_factory(ObjetoAprendizaje,VerdaderoFalso,fields=('titulo','enunGeneral','descripcion','objetoAprendizaje'), extra = 0)
-#     oa = ObjetoAprendizaje.objects.get(pk=request.session["oa_pk"])
-#     formset = ActividadFormSet(request.POST, instance = oa)
-#     title = 'Guardar Actividades OA'
-#     context = {
-#             "title": title,
-#         }
-#     for form in formset:
-#         print form.as_p
-#     if formset.is_valid():
-#         for f_form in formset:
-#             if f_form.is_valid():
-#                 titulo = f_form.cleaned_data.get("titulo")
-#                 descripcion = f_form.cleaned_data.get("descripcion")
-#                 enunGeneral = f_form.cleaned_data.get("enunGeneral")
-#                 objetoAprendizaje = f_form.cleaned_data.get("objetoAprendizaje")
-#                 contenido = Contenido(titulo = titulo, descripcion = descripcion, enunGeneral = enunGeneral, objetoAprendizaje = objetoAprendizaje)
-#                 contenido.save()
-#         return index(request)
-#     else:
-#         return ayuda(request)
+# class OAFinalView(View):
+#     def get(self, request, *args, **kwargs):
+#         oa = request.session['oa']
+#         contenidos = request.session['contenidos']
+#         actividades = request.session['actividades']
+#         return render(request, 'save_oa_details.html', {'oa': oa,'contenidos': contenidos, 'actividades':actividades})
+#     def post(self, request, *args, **kwargs):
+#         oa = bunchify(request.session['oa'])
+#         contenidos = bunchify(request.session['contenidos'])
+#         actividades = bunchify(request.session['actividades'])
+#         newOa = ObjetoAprendizaje(titulo= oa.titulo, descripcion= oa.descripcion, patron= Patron.objects.get(id=oa.patron), user= User.objects.get(username = request.user))
+#         newOa.save()
+#         for contenido in contenidos:
+#             newOa.contenido_set.create(orden= contenido.orden, titulo= contenido.titulo, descripcion=contenido.descripcion, contenido= contenido.contenido)
+#         for actividad in actividades:
+#             newOa.actividad_set.create(enunciado= actividad.enunciado, tipo=actividad.tipo)
+#         return render(request, 'oa_final.html', {'oa': model_to_dict(newOa), 'contenidos': contenidos, 'actividades': actividades})

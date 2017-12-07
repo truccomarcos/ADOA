@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm, inlineformset_factory
+from django.forms import ModelForm, inlineformset_factory, BaseInlineFormSet, formset_factory
 from django.forms.formsets import BaseFormSet
 from models import *
 from django.contrib.auth.models import User
@@ -10,35 +10,34 @@ from ckeditor.widgets import CKEditorWidget
 from crispy_forms.bootstrap import *
 import pdb
 
-
 class ObjetoAprendizajeForm(forms.ModelForm):
     class Meta:
         model = ObjetoAprendizaje
-        fields = ['titulo','descripcion','patron']
+        fields = ['titulo','patron','descripcion']
     titulo = forms.CharField(max_length = 30)
     descripcion = forms.CharField(widget=CKEditorWidget())
     patron = forms.ModelChoiceField(queryset=Patron.objects.all())
     def __init__(self, *args, **kwargs):
+        super(ObjetoAprendizajeForm, self).__init__(*args, **kwargs)
         self.helper= FormHelper()
         self.helper.layout = Layout(
             Div(
                 Div('Objeto de Aprendizaje'),
-                Div('patron', HTML("<a href= '{% url 'patrones' %}''>Que patron elegir? </a>"),),
+                Div('patron', HTML("<a href= '{% url 'adoa:patrones' %}''>Que patron elegir? </a>"),),
                 Div('titulo'),
                 Div('descripcion'),
-                HTML("<div class='well'><center><button type='submit' class='btn btn-success' >Contiunar</button></center></div>"),
-                # Submit('contunuar', 'Guardar y Continuar'),
+                HTML('<input type="submit" class="btn btn-primary" value="Continuar &rarr;">'),
         css_class='row-fluid'),
         )
-        super(ObjetoAprendizajeForm, self).__init__(*args, **kwargs)
 
-
+#--------------------------------------------------------------------------
 class PatronForm(ModelForm):
     class Meta:
         model = Patron
         fields = ['titulo', 'descripcion', 'problemas', 'solucion']
 
 
+# #--------------------------------------------------------------------------
 class ContenidoForm(forms.ModelForm):
     class Meta:
         model = Contenido
@@ -51,7 +50,6 @@ class ContenidoForm(forms.ModelForm):
         self.helper= FormHelper()
         self.helper.layout = Layout(
             Div(
-                Div('Contenido'),
                 Div('orden'),
                 Div('titulo'),
                 Div('descripcion'),
@@ -61,44 +59,125 @@ class ContenidoForm(forms.ModelForm):
         super(ContenidoForm, self).__init__(*args, **kwargs)
 
 
+#--------------------------------------------------------------------------
 class ActividadForm(forms.ModelForm):
     class Meta:
-        model = Contenido
-        fields = ['titulo']
-    titulo = forms.CharField(max_length=100)
+        model = Actividad
+        fields = ['enunciado','tipo']
+    enunciado = forms.CharField(max_length=100)
     def __init__(self, *args, **kwargs):
         self.helper= FormHelper()
         self.helper.layout = Layout(
             Div(
-                Div('titulo'),
+                Div('enunciado'),
+                Div('tipo'),
             css_class='row-fluid'),
         )
         super(ActividadForm, self).__init__(*args, **kwargs)
 
+#--------------------------------------------------------------------------
+#
+# ObjetoAprendizajeInlineFormset = inlineformset_factory(ObjetoAprendizaje,
+#                                          Contenido,
+#                                          form=ContenidoForm,
+#                                          fields=('titulo','descripcion','contenido')
+#                                          )
 
+# ActvidadesFormSet = inlineformset_factory(ObjetoAprendizaje, Actividad,
+#     form=ActividadForm, extra=2)
+
+#-------------------------------------------------------------------------
 class UserLoginForm(ModelForm):
     class Meta:
         model = User
         fields = ['username', 'password', 'email']
 
-class VerdaderoFalsoForm(ActividadForm):
-    enunGeneral =  forms.CharField(max_length = 30)
-    descripcion = forms.CharField(widget=CKEditorWidget())
-    # objetoAprendizaje = forms.ModelChoiceField(queryset=ObjetoAprendizaje.objects.all(), initial = ObjetoAprendizaje.objects.get(pk=1))
+#--------------------------------------------------------------------------
+# class ElementoVerdaderoFalsoForm(forms.ModelForm):
+#     class Meta:
+#         model = ElementoVoF
+#         fields = ['enunciado', 'verdad']
+#     enunciado = forms.CharField(max_length = 30)
+#     verdad = forms.BooleanField()
+#     def __init__(self, *args, **kwargs):
+#         self.helper= FormHelper()
+#         self.helper.layout = Layout(
+#             Div(
+#                 Div('enunciado'),
+#                 Div('verdad '),
+#             css_class='row-fluid'),
+#         )
+#         super(ActividadForm, self).__init__(*args, **kwargs)
 
-class ElementoVerdaderoFalsoForm(forms.Form):
-    enunciado = forms.CharField(max_length = 30)
-    verdad = forms.BooleanField()
-    VoF = forms.ModelChoiceField(queryset=VerdaderoFalso.objects.all())
+#--------------------------------------------------------------------------
+# class ContenidoFormSet(BaseFormSet):
+#     def clean(self):
+#         if any(self.errors):
+#             return
+#         contenidos = []
+#
+# class ActividadesFormSet(BaseFormSet):
+#     def clean(self):
+#         if any(self.errors):
+#             return
+#         actividades = []
 
-class ContenidosFormSet(BaseFormSet):
+#--------------------------------------------------------------------------
+class VerdaderoFalsoFormset(BaseFormSet):
     def clean(self):
         if any(self.errors):
             return
-        contenidos = []
+        VoFs = []
 
-class ActividadesFormSet(BaseFormSet):
-    def clean(self):
-        if any(self.errors):
-            return
-        actividades = []
+# class BaseNestedFormset(BaseInlineFormSet):
+#
+#     def add_fields(self, form, index):
+#         # allow the super class to create the fields as usual
+#         super(BaseNestedFormset, self).add_fields(form, index)
+#         form.nested = self.nested_formset_class(
+#             instance=form.instance,
+#             data=form.data if self.is_bound else None,
+#             prefix='%s-%s' % (
+#                 form.prefix,
+#                 self.nested_formset_class.get_default_prefix(),
+#             ),
+#         )
+#
+#     def is_valid(self):
+#         result = super(BaseNestedFormset, self).is_valid()
+#         if self.is_bound:
+#             # look at any nested formsets, as well
+#             for form in self.forms:
+#                 result = result and form.nested.is_valid()
+#         return result
+#
+#     def save(self, commit=True):
+#         result = super(BaseNestedFormset, self).save(commit=commit)
+#         for form in self:
+#             form.nested.save(commit=commit)
+#         return result
+#
+# def nested_formset_factory(parent_model, child_model, grandchild_model):
+#     parent_child = inlineformset_factory(
+#         parent_model,
+#         child_model,
+#         formset=BaseNestedFormset,
+#     )
+#     parent_child.nested_formset_class = inlineformset_factory(
+#         child_model,
+#         grandchild_model,
+#     )
+#     return parent_child
+
+
+    # def add_fields(self, form, index):
+    #         # allow the super class to create the fields as usual
+    #         super(ActividadesFormSet, self).add_fields(form, index)
+    #         form.nested = self.nested_formset_class(
+    #             instance=form.instance,
+    #             data=form.data if self.is_bound else None,
+    #             prefix='%s-%s' % (
+    #                 form.prefix,
+    #                 self.nested_formset_class.get_default_prefix(),
+    #         ),
+    #     )

@@ -18,7 +18,7 @@
 
 {% block content %}
 <h1>Contenidos:</h1>
-<form method="post" class="uniForm" action="{% url 'oa_contenidos' %}">
+<form method="post" class="uniForm" action="{% url 'adoa:oa_contenidos' %}">
   {% csrf_token %}
   {{ contenido_formset|crispy }}
   <center><button type='submit' class='btn btn-success'>Contiunar</button></center>

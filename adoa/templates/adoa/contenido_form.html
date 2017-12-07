@@ -1,4 +1,4 @@
-{% extends "base.html" %}<h1>Actividades:</h1>
+{% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% load staticfiles %}
 <!DOCTYPE html>
@@ -16,11 +16,14 @@
 
 {% block jumbotron %}{% endblock %}
 
+<div class=contenido-form-template hidden>
+  {% crispy form-template %}
+</div>
+
 {% block content %}
-<h1>Objecto de aprendizaje:</h1>
-<form method="post" class="uniForm" action="{% url 'adoa:oa_final' %}">
+<h1>Contenidos:</h1>
+<form method="POST" action={% url 'adoa:contenidos' pk %}>
   {% csrf_token %}
-  {% include '_oa_details.html' %}
-  <center><button type='submit' class='btn btn-success'>Finalizar</button></center>
+  {% crispy form %}
 </form>
 {% endblock %}

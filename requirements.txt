@@ -6,3 +6,4 @@ django-registration-redux
 django-tinymce
 python-dotenv
 bunch
+django-dynamic-formset

@@ -11,7 +11,7 @@
 
 .center {
     margin: auto;
-    width: 10%; 
+    width: 10%;
     padding: 10px;
 }
 
@@ -19,7 +19,7 @@
 
 {% block jumbotron %}
 
- 
+
 {% endblock %}
 
 {% block content %}
@@ -27,20 +27,20 @@
 {% csrf_token %}
 
 <table>
-        
-          
 
 
 
-          <form id="myForm" method="POST" action="{%url 'guardarcontenidosOA'%}">
+
+
+          <form id="myForm" method="POST" action="{%url 'adoa:guardarcontenidosOA'%}">
             {% csrf_token %}
               {{ formset.management_form }}
               <table border="0" cellpadding="0" cellspacing="0">
                   <tbody>
                       {% for form in formset.forms %}
                       {% crispy form %}
-                        
-                        
+
+
                         {% for hidden in form.hidden_fields %}
                           {{ hidden }}
                         {% endfor %}
@@ -49,12 +49,11 @@
                       {% endfor %}
                   </tbody>
               </table>
-              
+
               <div class='well'><center><button type='submit' class='btn btn-success' >Guardar y contiunar</button></center></div>
           </form>
 
 
-            
+
       </table>
     {% endblock %}
-    

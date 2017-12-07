@@ -3,7 +3,7 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 
-{% block head_title %}Contenidos del OA | {{ block.super }}{% endblock %}
+{% block head_title %}Actividades del OA | {{ block.super }}{% endblock %}
 {% block style %}
 
 .center {
@@ -18,9 +18,9 @@
 
 {% block content %}
 <h1>Actividades:</h1>
-<form method="post" class="uniForm" action="{% url 'oa_actividades' %}">
+<form method="post" class="uniForm" action="{% url 'adoa:oa_actividades' %}">
   {% csrf_token %}
-  {{ actividad_formset|crispy }}
-  <center><button type='submit' class='btn btn-success'>Contiunar</button></center>
+  {{ actividades_formset|crispy }}
+  <center><button type='submit' class='btn btn-success'>Continuar</button></center>
 </form>
 {% endblock %}

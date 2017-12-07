@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>Objetos de aprendizaje</h1>
+
+<p>
+    <a href="{% url "adoa:new" %}">Agregar oa</a>
+</p>
+
+<ul>
+    {% for objetoaprendizaje in object_list %}
+        <li>
+            <p>{{ objetoaprendizaje.titulo | safe}}</p>
+            <p>
+              <a href="{% url "adoa:detail" objetoaprendizaje.id %}">Ver</a> |
+              <a href="{% url "adoa:edit" objetoaprendizaje.id %}">Editar</a> |
+              <a href="{% url "adoa:delete" objetoaprendizaje.id %}">Borrar</a>
+            </p>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

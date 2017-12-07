@@ -5,17 +5,28 @@ from adoa.views import *
 
 urlpatterns = [
     # url(r'^$', index, name='index'),
-    url(r'^$', index),
-    url(r'^index/', index, name='index'),
+    url(r'^$', Index.as_view()),
+    url(r'^index/', Index.as_view(), name='index'),
+
     url(r'^accounts/', include('registration.backends.default.urls')),
-    url(r'^queEsOA/', queEsOA, name='queEsOA'),
-    url(r'^queEsPatron/', queEsPatron, name='queEsPatron'),
-    url(r'^ayuda/', ayuda, name='ayuda'),
-    url(r'^OA/new/$', oa_new, name='oa_new'),
-    url(r'^OA/new/contenidos/$', oa_contenidos, name='oa_contenidos'),
-    url(r'^OA/new/actividades/$', oa_actividades, name='oa_actividades'),
-    url(r'^OA/new/final/$', oa_final, name='oa_final'),
-    url(r'^patrones/', patrones, name = 'patrones'),
+    url(r'^queEsOA/', QueEsOA.as_view(), name='queEsOA'),
+    url(r'^queEsPatron/', QueEsPatron.as_view(), name='queEsPatron'),
+    url(r'^ayuda/', Ayuda.as_view(), name='ayuda'),
+    url(r'^patrones/', PatronesView.as_view(), name = 'patrones'),
+
+    url(r'^oa$', ObjetoAprendizajeList.as_view(), name='list'),
+    url(r'^oa/(?P<pk>\d+)$', ObjetoAprendizajeDetail.as_view(), name='detail'),
+    url(r'^oa/nuevo$', ObjetoAprendizajeCreation.as_view(), name='new'),
+    url(r'^oa/editar/(?P<pk>\d+)$', ObjetoAprendizajeUpdate.as_view(), name='edit'),
+    url(r'^oa/borrar/(?P<pk>\d+)$', ObjetoAprendizajeDelete.as_view(), name='delete'),
+    url(r'^oa/contenidos/(?P<pk>\d+)$', ContenidosCreation.as_view(), name='contenidos'),
+
+    # url(r'^OA/', ListOAView.as_view(), name='oa_list'),
+    # url(r'^OA/new/$', OAFormView.as_view(), name='oa_new'),
+    # url(r'^OA/new/contenidos/$', CreateOAView.as_view(), name='oa_contenidos'),
+    # url(r'^OA/new/actividades/$', OAActividadesFormView.as_view(), name='oa_actividades'),
+    # url(r'^OA/new/final/$', OAFinalView.as_view(), name='oa_final'),
+]
     # url(r'^inicioOA/', inicioOA, name = 'inicioOA'),
     # url(r'^contenidosOA/', contenidosOA, name = 'contenidosOA'),
     # url(r'^OA/(?P<oa_id>[0-9]+)/$', detail, name='detail'),
@@ -37,4 +48,3 @@ urlpatterns = [
     # url(r'^tinymce/', include('tinymce.urls')),
     # url(r'^ckeditor/', include('ckeditor_uploader.urls')),
 	# url(r'^admin/', include(admin.site.urls)),
-]
