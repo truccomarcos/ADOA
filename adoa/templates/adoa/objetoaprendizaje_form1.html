@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% block content %}
+<form id="father-form" method="POST" enctype="multipart/form-data" action=".">
+{% csrf_token %}
+<div class="row">
+  {% for f in form %}
+    <div class="span3">{{ f.label }}<br />{{ f }}
+      {% if f.errors %}
+          {% for v in f.errors %}
+            <br /><span style="color:red;">{{ v }}</span>
+          {% endfor %}
+      {% endif %}
+    </div>
+ {% endfor %}
+</div>
+<hr />
+<h2>Sons:</h2>
+<table class="table-striped">
+ <table>
+ {%  for f2 in inlines %}
+   <tr id="{{ f2.prefix }}-row">
+      {% for i in f2 %}
+        <td>
+           {{ i }}{% if i.errors %}<span style="color:red;">{{ i.errors }}</span>{% endif %}
+        </td>
+      {% endfor %}
+   </tr>
+ {% endfor %}
+</table>
+{{ inlines.management_form }}
+<input type="submit" class="btn btn-primary" value="Go Go Gadget &rarr;">
+</form>
+<script type="text/javascript">
+    $(function() {
+        $('#father-form tr').formset();
+    })
+</script>
+{% endblock %}

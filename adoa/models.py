@@ -13,8 +13,8 @@ ACTIVIDAD_TYPE_CHOICES = (
 )
 #--------------------------------------------------------------------------
 class Patron(models.Model):
-    titulo = RichTextField()
-    descripcion = RichTextField()
+    titulo = models.CharField(max_length=30)
+    descripcion = models.CharField(max_length=300)
     problemas = RichTextField()
     solucion = RichTextField()
     def get_contenidos(self):
@@ -27,29 +27,29 @@ class Patron(models.Model):
 #--------------------------------------------------------------------------
 class ContenidoPatron(models.Model):
     orden = models.IntegerField()
-    titulo = RichTextField()
-    descripcion = RichTextField()
+    titulo = models.CharField(max_length=30)
+    descripcion = models.CharField(max_length=500)
     patron = models.ForeignKey(Patron)
 #--------------------------------------------------------------------------
 class ObjetoAprendizaje(models.Model):
-    titulo = RichTextField()
-    descripcion = RichTextField()
+    titulo = models.CharField(max_length=30)
+    descripcion = models.CharField(max_length=140)
     patron = models.ForeignKey(Patron)
     user = models.ForeignKey(User)
     def __unicode__(self):
        return self.titulo
 #--------------------------------------------------------------------------
 class Contenido(models.Model):
-    orden = models.IntegerField()
-    titulo = RichTextField()
-    descripcion = RichTextField()
+    titulo = models.CharField(max_length=30)
+    orden = models.CharField(max_length=140)
+    descripcion = models.CharField(max_length=500)
     contenido = RichTextField()
     objetoAprendizaje = models.ForeignKey(ObjetoAprendizaje)
     def __unicode__(self):
        return self.titulo
 #--------------------------------------------------------------------------
 class Actividad(models.Model):
-    enunciado = RichTextField()
+    enunciado = models.CharField(max_length=30)
     tipo = models.CharField(max_length=1, choices=ACTIVIDAD_TYPE_CHOICES, null=True)
     objetoAprendizaje = models.ForeignKey(ObjetoAprendizaje)
     def __unicode__(self):

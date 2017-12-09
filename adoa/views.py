@@ -30,56 +30,145 @@ from django.shortcuts import redirect
 
 from .models import ObjetoAprendizaje
 
+
+from django.core import serializers
+from django.http import JsonResponse
+from extra_views import FormSetView, ModelFormSetView, InlineFormSetView, InlineFormSet, CreateWithInlinesView, UpdateWithInlinesView, CalendarMonthView, NamedFormsetsMixin, SortableListMixin, SearchableListMixin
+from extra_views.generic import GenericInlineFormSet, GenericInlineFormSetView
+
 class ObjetoAprendizajeList(ListView):
     model = ObjetoAprendizaje
 
 class ObjetoAprendizajeDetail(DetailView):
     model = ObjetoAprendizaje
 
-class ObjetoAprendizajeCreation(CreateView):
+class GetContenidoPatron(View):
+    def get(self,request,pk):
+        patron = Patron.objects.get(pk=pk)
+        contenidos = patron.contenidopatron_set.values('orden','descripcion')
+        return JsonResponse({'contenidos': list(contenidos)})
+
+class ContenidoCreate(ModelFormSetView):
+    model = Contenido
+    form_class = ContenidoForm
+    template_name = 'adoa/contenido_form.html'
+
+class ContenidoInline(InlineFormSet):
+    model = Contenido
+    form_class = ContenidoForm
+
+class ContenidoView(ModelFormSetView):
+    model = Contenido
+    # fields = ['orden','titulo','descripcion','contenido']
+    form_class = ContenidoForm
+    template_name = 'adoa/contenido_form.html'
+    def get(self,request,pk):
+        patron_id = self.kwargs['pk']
+        contenidos = Patron.objects.get(pk=patron_id).contenidopatron_set.values()
+        self.extra = len(contenidos)
+        return super(ContenidoView, self).get(self,request)
+    def get_initial(self):
+        patron_id = self.kwargs['pk']
+        contenidos = Patron.objects.get(pk=patron_id).contenidopatron_set.values()
+        return contenidos
+
+class ObjetoAprendizajeCreate(CreateWithInlinesView):
     model = ObjetoAprendizaje
     form_class = ObjetoAprendizajeForm
-    def form_valid(self, form):
-        objetoAprendizaje = form.save(commit=False)
-        objetoAprendizaje.user = self.request.user
-        objetoAprendizaje.save()
-        return HttpResponseRedirect(reverse_lazy('adoa:contenidos', kwargs={'pk':objetoAprendizaje.id}))
-
-class ContenidosCreation(View):
-    model = Contenido
-    formset_class = formset_factory(ContenidoForm)
-    template_name = 'adoa/contenido_form.html'
-    def get(self, request,pk):
-            oa = request.session['oa']
-            contenidos = request.session['contenidos']
-            contenidos_data = [{'orden': int(c['orden']), 'titulo': str(c['titulo']), 'descripcion': str(c['descripcion']), 'contenido': str(c['contenido'])}
-                            for c in request.session['contenidos']]
-            formset = self.formset_class(initial = contenidos_data)
-            return render(request, self.template_name, { 'oa':oa, 'contenido_formset': formset })
-
-    def get_context_data(self, **kwargs):
-        context = super(ContenidosCreation, self).get_context_data(**kwargs)
-        context['pk'] = self.kwargs['pk']
-        context['form-template'] = ContenidoForm
-        return context
-    def get_initial(self):
-        pk = self.kwargs['pk']
-        objetoAprendizaje = ObjetoAprendizaje.objects.get(pk=pk)
-        initial = objetoAprendizaje.patron.contenidopatron_set.values()
-        return initial
-    def form_valid(self, form):
-        pdb.set_trace()
-        pk = self.kwargs['pk']
-        oa = ObjetoAprendizaje.objects.get(pk=pk)
-        contenidos = form.save(commit=False)
-        for contenido in contenidos:
-            contenido.objetoAprendizaje = oa
-        contenidos.save()
-        return reverse_lazy('adoa:list')
+    inlines = [ContenidoInline]
+    template_name = 'adoa/objeto_and_contenidos.html'
+    # def form_valid(self,request):
+    #     form = self.form_class(self.request.POST)
+    #     objetoAprendizaje = form.save(commit=False)
+    #     objetoAprendizaje.user = self.request.user
+    #     objetoAprendizaje.save()
+    #     return HttpResponseRedirect(reverse_lazy('adoa:list', kwargs={'pk':objetoAprendizaje.id}))
 
 
+
+
+
+# class CreateOAView(CreateView):
+#     model = ObjetoAprendizaje
+#     form_class = ObjetoAprendizajeForm # the parent object's form
 #
+#     # On successful form submission
+#     def get_success_url(self):
+#         return reverse('adoa:list')
 #
+#     # Validate forms
+#     def form_valid(self, form):
+#         ctx = self.get_context_data()
+#         inlines = ctx['inlines']
+#         if inlines.is_valid() and form.is_valid():
+#             self.object = form.save() # saves Father and Children
+#             return redirect(self.get_success_url())
+#         else:
+#             return self.render_to_response(self.get_context_data(form=form))
+#
+#     def form_invalid(self, form):
+#         return self.render_to_response(self.get_context_data(form=form))
+#
+#     # We populate the context with the forms. Here I'm sending
+#     # the inline forms in `inlines`
+#     def get_context_data(self, **kwargs):
+#         ctx = super(CreateOAView, self).get_context_data(**kwargs)
+#         if self.request.POST:
+#             ctx['form'] = ObjetoAprendizajeForm(self.request.POST)
+#             ctx['inlines'] = ObjetoAprendizajeInlineFormSet(self.request.POST)
+#         else:
+#             ctx['form'] = ObjetoAprendizajeForm()
+#             ctx['inlines'] = ObjetoAprendizajeInlineFormSet()
+        # return ctx
+
+
+# class ObjetoAprendizajeCreation(CreateView):
+#     model = ObjetoAprendizaje
+#     form_class = ObjetoAprendizajeForm
+#     def form_valid(self, form):
+#         objetoAprendizaje = form.save(commit=False)
+#         objetoAprendizaje.user = self.request.user
+#         objetoAprendizaje.save()
+#         return HttpResponseRedirect(reverse_lazy('adoa:contenidos', kwargs={'pk':objetoAprendizaje.id}))
+#
+
+# class ContenidosCreation(View):
+#     model = Contenido
+#     formset_class = formset_factory(ContenidoForm)
+#     template_name = 'adoa/contenido_form.html'
+#     def get(self, request,pk):
+#             oa = request.session['oa']
+#             contenidos = request.session['contenidos']
+#             contenidos_data = [{'orden': int(c['orden']), 'titulo': str(c['titulo']), 'descripcion': str(c['descripcion']), 'contenido': str(c['contenido'])}
+#                             for c in request.session['contenidos']]
+#             formset = self.formset_class(initial = contenidos_data)
+#             return render(request, self.template_name, { 'oa':oa, 'contenido_formset': formset })
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(ContenidosCreation, self).get_context_data(**kwargs)
+#         context['pk'] = self.kwargs['pk']
+#         context['form-template'] = ContenidoForm
+#         return context
+#     def get_initial(self):
+#         pk = self.kwargs['pk']
+#         objetoAprendizaje = ObjetoAprendizaje.objects.get(pk=pk)
+#         initial = objetoAprendizaje.patron.contenidopatron_set.values()
+#         return initial
+#     def form_valid(self, form):
+#         pdb.set_trace()
+#         pk = self.kwargs['pk']
+#         oa = ObjetoAprendizaje.objects.get(pk=pk)
+#         contenidos = form.save(commit=False)
+#         for contenido in contenidos:
+#             contenido.objetoAprendizaje = oa
+#         contenidos.save()
+#         return reverse_lazy('adoa:list')
+
+
+
+
+
+
 # class CreateFatherView(CreateView):
 #     template_name = 'father_create.html'
 #     model = Father
@@ -125,8 +214,6 @@ class ObjetoAprendizajeUpdate(UpdateView):
 class ObjetoAprendizajeDelete(DeleteView):
     model = ObjetoAprendizaje
     success_url = reverse_lazy('adoa:list')
-
-
 
 
 class Index(View):

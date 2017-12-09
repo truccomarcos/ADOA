@@ -1,4 +1,4 @@
-django
+django=1.11.4
 MySQL-python
 django-wysiwyg
 django-ckeditor
@@ -6,4 +6,8 @@ django-registration-redux
 django-tinymce
 python-dotenv
 bunch
-django-dynamic-formset
+django-formset-js-improved
+django-extra-views
+django-template-debug
+django-crispy-forms
+Pillow

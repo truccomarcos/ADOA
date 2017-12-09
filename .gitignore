@@ -1,4 +1,6 @@
-static
+static/static_root
+static/our_static/img
+static/our_static/tiny_mce
 */*.pyc
 */*/*.pyc
 .env

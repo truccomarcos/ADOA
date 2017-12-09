@@ -20,4 +20,5 @@ from django.conf.urls import include
 urlpatterns = [
     url(r'^', include('adoa.urls', namespace='adoa')),
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/', include('registration.backends.default.urls')),
 ]

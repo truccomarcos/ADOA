@@ -1,29 +1,8 @@
-{% extends "base.html" %}
 {% load crispy_forms_tags %}
-{% load staticfiles %}
-<!DOCTYPE html>
-
-{% block head_title %}Contenidos del OA | {{ block.super }}{% endblock %}
-{% block style %}
-
-.center {
-    margin: auto;
-    width: 10%;
-    padding: 10px;
-}
-
-{% endblock %}
-
-{% block jumbotron %}{% endblock %}
-
-<div class=contenido-form-template hidden>
-  {% crispy form-template %}
-</div>
-
-{% block content %}
-<h1>Contenidos:</h1>
-<form method="POST" action={% url 'adoa:contenidos' pk %}>
-  {% csrf_token %}
+{% load debug_tags %}
+{%  for form in formset %}
+<div class=contenido-form>
   {% crispy form %}
-</form>
-{% endblock %}
+  <a onclick="deleteContenido(this)" class=delete-contenido href="javascript:void(0)">Quitar</a>
+</div>
+{% endfor %}

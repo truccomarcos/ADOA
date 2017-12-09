@@ -8,12 +8,15 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import *
 from ckeditor.widgets import CKEditorWidget
 from crispy_forms.bootstrap import *
+from djangoformsetjs.utils import formset_media_js
 import pdb
 
 class ObjetoAprendizajeForm(forms.ModelForm):
     class Meta:
         model = ObjetoAprendizaje
         fields = ['titulo','patron','descripcion']
+        # class Media(object):
+        #     js = formset_media_js
     titulo = forms.CharField(max_length = 30)
     descripcion = forms.CharField(widget=CKEditorWidget())
     patron = forms.ModelChoiceField(queryset=Patron.objects.all())
@@ -22,11 +25,11 @@ class ObjetoAprendizajeForm(forms.ModelForm):
         self.helper= FormHelper()
         self.helper.layout = Layout(
             Div(
-                Div('Objeto de Aprendizaje'),
-                Div('patron', HTML("<a href= '{% url 'adoa:patrones' %}''>Que patron elegir? </a>"),),
-                Div('titulo'),
-                Div('descripcion'),
-                HTML('<input type="submit" class="btn btn-primary" value="Continuar &rarr;">'),
+                Field('patron'),
+                HTML("<a href= '{% url 'adoa:patrones' %}''>Que patron elegir? </a>"),
+                Field('titulo'),
+                Field('descripcion'),
+                # HTML('<input type="submit" class="btn btn-primary" value="Continuar &rarr;">'),
         css_class='row-fluid'),
         )
 
@@ -47,18 +50,27 @@ class ContenidoForm(forms.ModelForm):
     descripcion = forms.CharField(widget=CKEditorWidget())
     contenido = forms.CharField(widget=CKEditorWidget())
     def __init__(self, *args, **kwargs):
-        self.helper= FormHelper()
+        self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
-                Div('orden'),
-                Div('titulo'),
-                Div('descripcion'),
-                Div('contenido'),
-            css_class='row-fluid'),
-        )
+                    Field('orden',type='hidden'),
+                    Field('titulo'),
+                    Field('descripcion'),
+                    Field('contenido'),
+                    css_class='row-fluid'),
+            )
         super(ContenidoForm, self).__init__(*args, **kwargs)
 
 
+ObjetoAprendizajeInlineFormSet = inlineformset_factory(ObjetoAprendizaje,
+    Contenido,
+    form=ContenidoForm,
+    extra=0,
+    can_delete=False,
+    can_order=False
+)
+
+ContenidoFormSet = formset_factory(ContenidoForm)
 #--------------------------------------------------------------------------
 class ActividadForm(forms.ModelForm):
     class Meta:

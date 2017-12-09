@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load debug_tags %}
+{% load get_name %}
+{% block content %}
+<h1>Objeto y contenidos</h1>
+<form action="." method="post">
+
+{% crispy form %}
+
+{% for formset in inlines %}
+
+  <input class=form-amount type=number value={{formset|length}} hidden>
+  {% with formset.model|to_class_name|lower as model_name %}
+    <h1>{{ formset.model|to_class_name }}</h1>
+    <div class={{model_name}}-formset>
+    </div>
+    <a class=add-contenido href="javascript:void(0)">Agregar</a>
+  {% endwith %}
+{% endfor %}
+
+<input type="submit" value="Submit" />
+
+</form>
+{% endblock %}

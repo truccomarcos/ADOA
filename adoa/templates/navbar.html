@@ -21,14 +21,14 @@
           <ul class="nav navbar-nav navbar-right">
           {% if request.user.is_authenticated %}
             <li><a href="{% url 'adoa:index' %}">Bienvenido {{ user.get_username }}</a></li>
-            <li><a href="{% url 'adoa:auth_logout' %}">Cerrar Sesión</a></li>
+            <li><a href="{% url 'auth_logout' %}">Cerrar Sesión</a></li>
             {% else %}
-            <li><a href="{% url 'adoa:registration_register' %}">Registrarse</a></li>
+            <li><a href="{% url 'registration_register' %}">Registrarse</a></li>
             {% endif %}
           </ul>
 
           {% if not request.user.is_authenticated and not "/accounts/login" in request.get_full_path %}
-            <form class='navbar-form navbar-right' method='POST' action='{% url "adoa:auth_login" %}'>{% csrf_token %}
+            <form class='navbar-form navbar-right' method='POST' action='{% url "auth_login" %}'>{% csrf_token %}
               <div class='form-group'>
                   <input type='text' class='form-control' name='username' placeholder='Usuario' />
               </div>

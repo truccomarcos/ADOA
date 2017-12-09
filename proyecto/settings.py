@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     'django_wysiwyg',
     'ckeditor',
     'ckeditor_uploader',
+    'djangoformsetjs',
+    'template_debug',
 ]
 
 MIDDLEWARE = [

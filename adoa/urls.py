@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^$', Index.as_view()),
     url(r'^index/', Index.as_view(), name='index'),
 
-    url(r'^accounts/', include('registration.backends.default.urls')),
+    
     url(r'^queEsOA/', QueEsOA.as_view(), name='queEsOA'),
     url(r'^queEsPatron/', QueEsPatron.as_view(), name='queEsPatron'),
     url(r'^ayuda/', Ayuda.as_view(), name='ayuda'),
@@ -16,10 +16,11 @@ urlpatterns = [
 
     url(r'^oa$', ObjetoAprendizajeList.as_view(), name='list'),
     url(r'^oa/(?P<pk>\d+)$', ObjetoAprendizajeDetail.as_view(), name='detail'),
-    url(r'^oa/nuevo$', ObjetoAprendizajeCreation.as_view(), name='new'),
+    url(r'^oa/nuevo$', ObjetoAprendizajeCreate.as_view(), name='new'),
     url(r'^oa/editar/(?P<pk>\d+)$', ObjetoAprendizajeUpdate.as_view(), name='edit'),
     url(r'^oa/borrar/(?P<pk>\d+)$', ObjetoAprendizajeDelete.as_view(), name='delete'),
-    url(r'^oa/contenidos/(?P<pk>\d+)$', ContenidosCreation.as_view(), name='contenidos'),
+    url(r'^oa/patron/(?P<pk>\d+)$', ContenidoView.as_view(), name='patron'),
+    url(r'^oa/contenidos/(?P<pk>\d+)$', ContenidoCreate.as_view(), name='contenidos'),
 
     # url(r'^OA/', ListOAView.as_view(), name='oa_list'),
     # url(r'^OA/new/$', OAFormView.as_view(), name='oa_new'),
