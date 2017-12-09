@@ -59,7 +59,7 @@ class ContenidoInline(InlineFormSet):
 
 class ContenidoView(ModelFormSetView):
     model = Contenido
-    # fields = ['orden','titulo','descripcion','contenido']
+    fields = ['orden','titulo','descripcion','contenido']
     form_class = ContenidoForm
     template_name = 'adoa/contenido_form.html'
     def get(self,request,pk):

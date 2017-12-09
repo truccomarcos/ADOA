@@ -9,7 +9,7 @@ $(document).ready(function() {
 });
 
 $(function() {
-  $('#id_patron').change(function() {
+  $('#id_patron').click(function() {
     var idPatron = $(this).val();
     $.ajax({
       type: 'GET',
@@ -23,7 +23,6 @@ $(function() {
                             .replace("contenido-form","contenido-form-template");
         $('.contenido-formset').append(templateHtml);
         $('.contenido-formset').find('.contenido-form-template').hide();
-        // jQuery("body").html(jQuery("body").html());
         var formAmount = $('.contenido-formset').find('contenido-form').length;
         $('.form-amount').val(formAmount);
 
