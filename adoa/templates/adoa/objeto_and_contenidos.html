@@ -10,43 +10,39 @@
 {% block content %}
 <h1>Objeto y contenidos</h1>
 <form action="{% url 'adoa:new'%}" method="post">
+{% csrf_token %}
 
 {{ form.titulo|as_crispy_field }}
 {{ form.patron|as_crispy_field }}
 <br>
 <a href="{% url 'adoa:patrones' %}">Que patron elegir? </a>
-
 {{ form.descripcion|as_crispy_field }}
 
-
 {% for formset in inlines %}
-{% csrf_token %}
   {% with formset.model|to_class_name|lower as model_name %}
-  <input class={{model_name}}-amount type=number value={{formset|length}} hidden>
-    <h1>{{ model_name|title }}{% if model_name == 'actividad' %}e{% endif %}s</h1>
+    {% if forloop.first %}
+      <h2>{{ model_name|title }}s</h2>
+    {% endif %}
+    <input class={{model_name}}-amount type=number value={{formset|length}} hidden>
     <div class={{model_name}}-formset>
       {{formset|crispy}}
     </div>
-    {% if model_name == 'contenido' %}
-        <a class=add-contenido href="javascript:void(0)">Agregar</a>
-    {% endif %}
-    {% if model_name == 'elementovof' %}
-      <a class=add-elementovof href="javascript:void(0)">Agregar</a>
-    {% endif %}
-    {% if model_name == 'elementoordenamiento' %}
-      <a class=add-elementoordenamiento href="javascript:void(0)">Agregar</a>
-    {% endif %}
-    {% if model_name == 'elementoasociacion' %}
-      <a class=add-elementoasociacion href="javascript:void(0)">Agregar</a>
-    {% endif %}
-    {% if model_name == 'elementoopcionmultiple' %}
-      <a class=add-elementoopcionmultiple href="javascript:void(0)">Agregar</a>
-    {% endif %}
-    {% if model_name == 'elementoidentificacion' %}
-      <a class=add-elementoidentificacion href="javascript:void(0)">Agregar</a>
+    {% if forloop.first %}
+      <a class=add-contenido href="javascript:void(0)">Agregar</a>
+      <h2>Actividades</h2>
     {% endif %}
   {% endwith %}
 {% endfor %}
+<h3>Agregar actividades</h3>
+
+<select class=select-actividad>
+  <option value="">-------</option>
+  <option value="vof">Verdadero o Falso</option>
+  <option value="opcion_multiple">Opcion Multiple</option>
+  <option value="asociacion">Asociacion</option>
+  <option value="identificacion">Identificacion</option>
+  <option value="ordenamiento">Ordenamiento</option>
+</select>
 <p class=no-patron href="javascript:void(0)">Por favor, seleccione un patron para continuar.</p>
 <input class=send-form type="submit" value="Submit" />
 </form>

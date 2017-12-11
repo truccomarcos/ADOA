@@ -26,37 +26,4 @@ urlpatterns = [
     url(r'^oa/elementoidentificacion$', ElementoIdentificacionCreate.as_view(), name='elementoidentificacion'),
     url(r'^oa/elementoordenamiento$', ElementoOrdenamientoCreate.as_view(), name='elementoordenamiento'),
     url(r'^oa/elementoopcionmultiple$', ElementoOpcionMultipleCreate.as_view(), name='elementoopcionmultiple'),
-
-
-
-    # url(r'^oa/actividad$', ActividadCreate.as_view(), name='actividad'),
-
-    # url(r'^oa/contenidos/(?P<pk>\d+)$', ActividadCreate.as_view(), name='contenidos'),
-
-    # url(r'^OA/', ListOAView.as_view(), name='oa_list'),
-    # url(r'^OA/new/$', OAFormView.as_view(), name='oa_new'),
-    # url(r'^OA/new/contenidos/$', CreateOAView.as_view(), name='oa_contenidos'),
-    # url(r'^OA/new/actividades/$', OAActividadesFormView.as_view(), name='oa_actividades'),
-    # url(r'^OA/new/final/$', OAFinalView.as_view(), name='oa_final'),
 ]
-    # url(r'^inicioOA/', inicioOA, name = 'inicioOA'),
-    # url(r'^contenidosOA/', contenidosOA, name = 'contenidosOA'),
-    # url(r'^OA/(?P<oa_id>[0-9]+)/$', detail, name='detail'),
-    # url(r'^OA/(?P<oa_id>[0-9]+)/edit$', edit, name='edit'),
-
-    # ex: /polls/
-    # url(r'^$', views.index, name='index'),
-    # ex: /polls/5/
-    # ex: /polls/5/results/
-    # url(r'^(?P<oa_id>[0-9]+)/results/$', views.results, name='results'),
-    # ex: /polls/5/vote/
-    # url(r'^(?P<oa_id>[0-9]+)/vote/$', views.vote, name='vote'),
-
-
-
-    # url(r'^contenidosOA/', contenidosOA, name = 'contenidosOA'),
-    # url(r'^guardarcontenidosOA/', guardarcontenidosOA, name = 'guardarcontenidosOA'),
-    # url(r'^guardarActividadesOA/', guardarActividadesOA, name = 'guardarActividadesOA'),
-    # url(r'^tinymce/', include('tinymce.urls')),
-    # url(r'^ckeditor/', include('ckeditor_uploader.urls')),
-	# url(r'^admin/', include(admin.site.urls)),
