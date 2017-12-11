@@ -1,77 +1,171 @@
 var initialLoad = true;
 var defaultTemplateTag = "default-template";
 
-$(document).ready(function() {
-  if (initialLoad) {
-    $('#id_patron').val("");
-  }
-  initialLoad = false;
-});
-
 $(function() {
+  $('.add-contenido').hide();
+  $('.send-form').hide();
+  $('.no-patron').show();
+
+  $(window).on('beforeunload', function() {
+    $('#id_patron').val("");
+  });
+
   $('#id_patron').click(function() {
     var idPatron = $(this).val();
+    if (idPatron == "") {
+      $('.add-contenido').hide();
+      $('.send-form').hide();
+      $('.no-patron').show();
+    } else {
+      $.ajax({
+        type: 'GET',
+        url: "patron",
+        data: {
+          "pk_patron": idPatron
+        },
+        success: function(result) {
+          $('.contenido-form').remove();
+          var newCont = $(result.replace(/[\r\n]/g, ""));
+          var newHTML = '';
+          for (var i = 0; i < newCont.length; i++) {
+            newHTML += newCont[i].outerHTML.replace(new RegExp('form-' + i, 'g'), 'contenido_set-' + parseInt(i)).replace(/<( *)form( *) method="post"( *)>( *)/, '').replace(/<\/form>/, '');
+          }
+          $('.contenido-formset').append(newHTML);
+          $('#id_contenido_set-TOTAL_FORMS').val(newCont.length);
+          $('.add-contenido').show();
+          $('.send-form').show();
+          $('.no-patron').hide();
+        }
+      });
+    }
+  });
+
+  $('.add-contenido').click(function() {
+    alert("Add contenido");
     $.ajax({
       type: 'GET',
-      url: "patron/" + idPatron,
+      url: "contenido",
       success: function(result) {
-        $('.contenido-formset').empty();
-        $('.contenido-formset').append(result);
-        var template = $('.contenido-formset').find('.contenido-form')[0];
-        var templateHtml = template.outerHTML;
-        templateHtml = templateHtml.replace(/form-0/g,"form-"+defaultTemplateTag)
-                            .replace("contenido-form","contenido-form-template");
-        $('.contenido-formset').append(templateHtml);
-        $('.contenido-formset').find('.contenido-form-template').hide();
-        var formAmount = $('.contenido-formset').find('contenido-form').length;
-        $('.form-amount').val(formAmount);
-
-
-        // var formset = $($.parseHTML(result));
-        // var formsetHtml;
-        // for(i=0; i < formset.length-2; i++){
-        //   formsetHtml += $(formset[i]).html();
-        // }
-        // var templateHtml = $(formset[formset.length-2]).html();
-        // templateHtml = templateHtml.replace("id_form-" + 0 + "-titulo", "id_form-" + defaultTemplateTag + "-titulo")
-        //                     .replace("form-" + 0 + "-titulo", "form-" + defaultTemplateTag + "-titulo")
-        //                     .replace("id_form-" + 0 + "-descripcion", "id_form-" + defaultTemplateTag + "-descripcion")
-        //                     .replace("form-" + 0 + "-descripcion", "form-" + defaultTemplateTag + "-descripcion")
-        //                     .replace("id_form-" + 0 + "-contenido", "id_form-" + defaultTemplateTag + "-contenido")
-        //                     .replace("form-" + 0 + "-contenido", "form-" + defaultTemplateTag  + "-contenido")
-        //                     .replace("id_form-" + 0 + "-orden", "id_form-" + defaultTemplateTag + "-orden")
-        //                     .replace("form-" + 0 + "-orden", "form-" + defaultTemplateTag + "-orden")
-        //                     .replace("id_form-" + 0 + "-id", "id_form-" + defaultTemplateTag + "-id");
-        // var formAmount = formset.find('contenido-form').length;
-        // $('.contenido-formset').append(formsetHtml);
-        // $('.contenido-formset').append(templateHtml);
+        debugger;
+        var contenidoAmountInput = $('#id_contenido_set-TOTAL_FORMS');
+        var contenidoAmount = contenidoAmountInput.val();
+        var newCont = result.replace(new RegExp('form-0', 'g'), 'contenido_set-' + parseInt(contenidoAmount)).replace(/<( *)form( *) method="post"( *)>( *)/, '').replace(/<\/form>/, '');
+        $('.contenido-formset').append(newCont);
+        $('#id_contenido_set-' + contenidoAmount + '-orden').val(parseInt(contenidoAmount) + 1);
+        $('#id_contenido_set-' + contenidoAmount + '-titulo').val("");
+        $('#id_contenido_set-' + contenidoAmount + '-descripcion').val("");
+        contenidoAmountInput.val(parseInt(contenidoAmount) + 1);
       }
-    })
+    });
   });
-  // $('.add-contenido').click(function() {
-  //     alert("Add contenido");
-  //     debugger;
-  //     var formAmountInput = $('.form-amount');
-  //     var formAmount = formAmountInput.val()
-  //     var template = $('.contenido-form-template');
-  //     var templateHtml = template.html();
-  //     templateHtml = templateHtml.replace("id_form-" + (formAmount - 1) + "-titulo", "id_form-" + formAmount + "-titulo")
-  //                     .replace("form-" + (formAmount - 1) + "-titulo", "form-" + formAmount + "-titulo")
-  //                     .replace("id_form-" + (formAmount - 1) + "-descripcion", "id_form-" + formAmount + "-descripcion")
-  //                     .replace("form-" + (formAmount - 1) + "-descripcion", "form-" + formAmount + "-descripcion")
-  //                     .replace("id_form-" + (formAmount - 1) + "-contenido", "id_form-" + formAmount + "-contenido")
-  //                     .replace("form-" + (formAmount - 1) + "-contenido", "form-" + formAmount  + "-contenido")
-  //                     .replace("id_form-" + (formAmount - 1) + "-orden", "id_form-" + formAmount + "-orden")
-  //                     .replace("form-" + (formAmount - 1) + "-orden", "form-" + formAmount + "-orden")
-  //                     .replace("id_form-" + (formAmount - 1) + "-id", "id_form-" + formAmount + "-id");
-  //     template.remove();
-  //     ('.contenido-formset').append(templateHtml.replace('contenido-form-template','contenido-form')
-  //                                     .replace('hidden',''));
-  //     ('.contenido-formset').append(templateHtml);
-  //     formAmountInput.val(formAmount + 1);
-  // });
+
+  $('.add-elementovof').click(function() {
+    alert("add vof")
+    $.ajax({
+      type: 'GET',
+      url: "elementovof",
+      success: function(result) {
+        debugger;
+        var elementovofAmountInput = $('#id_elementovof_set-TOTAL_FORMS');
+        var elementovofAmount = elementovofAmountInput.val();
+        var newAct = result.replace(new RegExp('form-0', 'g'), 'elementovof_set-' + parseInt(elementovofAmount)).replace(/<( *)form( *) method="post"( *)>( *)/, '').replace(/<\/form>/, '');
+        $('.elementovof-formset').append(newAct);
+        elementovofAmountInput.val(parseInt(elementovofAmount) + 1);
+      }
+    });
+  });
+
+  $('.add-elementoordenamiento').click(function() {
+    $.ajax({
+      type: 'GET',
+      url: "elementoordenamiento",
+      success: function(result) {
+        var elementoordenamientoAmountInput = $('#id_elementoordenamiento_set-TOTAL_FORMS');
+        var elementoordenamientoAmount = elementoordenamientoAmountInput.val();
+        var newAct = result.replace(new RegExp('form-0', 'g'), 'elementoordenamiento_set-' + parseInt(elementoordenamientoAmount)).replace(/<( *)form( *) method="post"( *)>( *)/, '').replace(/<\/form>/, '');
+        $('.elementoordenamiento-formset').append(newAct);
+        elementoordenamientoAmountInput.val(parseInt(elementoordenamientoAmount) + 1);
+      }
+    });
+  });
+
+  $('.add-elementoasociacion').click(function() {
+    $.ajax({
+      type: 'GET',
+      url: "elementoasociacion",
+      success: function(result) {
+        var elementoasociacionAmountInput = $('#id_elementoasociacion_set-TOTAL_FORMS');
+        var elementoasociacionAmount = elementoasociacionAmountInput.val();
+        var newAct = result.replace(new RegExp('form-0', 'g'), 'elementoasociacion_set-' + parseInt(elementoasociacionAmount)).replace(/<( *)form( *) method="post"( *)>( *)/, '').replace(/<\/form>/, '');
+        $('.elementoasociacion-formset').append(newAct);
+        elementoasociacionAmountInput.val(parseInt(elementoasociacionAmount) + 1);
+      }
+    });
+  });
+
+  $('.add-elementoopcionmultiple').click(function() {
+    $.ajax({
+      type: 'GET',
+      url: "elementoopcionmultiple",
+      success: function(result) {
+        var elementoopcionmultipleAmountInput = $('#id_elementoopcionmultiple_set-TOTAL_FORMS');
+        var elementoopcionmultipleAmount = elementoopcionmultipleAmountInput.val();
+        var newAct = result.replace(new RegExp('form-0', 'g'), 'elementoopcionmultiple_set-' + parseInt(elementoopcionmultipleAmount)).replace(/<( *)form( *) method="post"( *)>( *)/, '').replace(/<\/form>/, '');
+        $('.elementoopcionmultiple-formset').append(newAct);
+        elementoopcionmultipleAmountInput.val(parseInt(elementoopcionmultipleAmount) + 1);
+      }
+    });
+  });
+
+  $('.add-elementoidentificacion').click(function() {
+    $.ajax({
+      type: 'GET',
+      url: "elementoidentificacion",
+      success: function(result) {
+        var elementoidentificacionAmountInput = $('#id_elementoidentificacion_set-TOTAL_FORMS');
+        var elementoidentificacionAmount = elementoidentificacionAmountInput.val();
+        var newAct = result.replace(new RegExp('form-0', 'g'), 'elementoidentificacion_set-' + parseInt(elementoidentificacionAmount)).replace(/<( *)form( *) method="post"( *)>( *)/, '').replace(/<\/form>/, '');
+        $('.elementoidentificacion-formset').append(newAct);
+        elementoidentificacionAmountInput.val(parseInt(elementoidentificacionAmount) + 1);
+      }
+    });
+  });
 });
 
-function deleteContenido(element) {
+function deleteThis(element) {
   $(element).parent().remove();
 }
+// $('.send-form').click(function(element){
+//   alert("submit");
+//   debugger;
+// });
+
+// $.ajax({
+//   type: 'GET',
+//   url: "actividad",
+//   success: function(result) {
+//     var template = result.replace(/[\r\n]/g,"").replace(/form-0/g,"form-"+defaultTemplateTag).replace(/<form  method="post" >/,'').replace(/<\/form>/,'');
+//     $('.actividad-template').append(result).hide();
+//   }
+// });
+
+// var actividadAmountInput = $('#id_actividad_set-TOTAL_FORMS');
+// var actividadAmount = actividadAmountInput.val();
+// var templateHtml = $('.actividad-template').html();
+// var regexp = new RegExp("form-"+defaultTemplateTag,'g');
+// var newActividad = templateHtml.replace(regexp,actividadAmount).replace(/[\r\n]/g,"");
+// $('.actividad-formset').append(newActividad).show();
+// actividadAmountInput.val(parseInt(actividadAmount) + 1);
+// var template = $('.contenido-formset').find('.contenido-form')[0];
+// var templateHtml = template.outerHTML;
+// templateHtml = templateHtml.replace(/form-0/g,"form-"+actividadAmount);
+// debugger;
+// $('.contenido-formset').append(templateHtml);
+// $('#id_form-' + actividadAmount + '-titulo').val("");
+// actividadAmountInput.val(actividadAmount + 1);
+
+
+
+// function deleteActividad(element) {
+//   $(element).parent().remove();
+// }

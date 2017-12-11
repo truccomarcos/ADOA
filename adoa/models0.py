@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+}from __future__ import unicode_literals
 from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import *
@@ -48,22 +48,22 @@ class Contenido(models.Model):
     def __unicode__(self):
        return self.titulo
 #--------------------------------------------------------------------------
-# class Actividad(models.Model):
-#     enunciado = models.CharField(max_length=30)
-#     tipo = models.CharField(max_length=1, choices=ACTIVIDAD_TYPE_CHOICES, null=True)
-#     objetoAprendizaje = models.ForeignKey(ObjetoAprendizaje)
-#     def __unicode__(self):
-#        return self.titulo
+class Actividad(models.Model):
+    enunciado = models.CharField(max_length=30)
+    tipo = models.CharField(max_length=1, choices=ACTIVIDAD_TYPE_CHOICES, null=True)
+    objetoAprendizaje = models.ForeignKey(ObjetoAprendizaje)
+    def __unicode__(self):
+       return self.titulo
 #--------------------------------------------------------------------------
 class ElementoVoF(models.Model):
     enunciado = models.CharField(max_length=100)
     verdad = models.BooleanField()
-    objetoAprendizaje = models.ForeignKey(ObjetoAprendizaje)
+    actividad = models.ForeignKey(Actividad, null=True)
 #--------------------------------------------------------------------------
 class ElementoOrdenamiento(models.Model):
     enunciado = models.CharField(max_length=100)
     orden = models.IntegerField()
-    objetoAprendizaje = models.ForeignKey(ObjetoAprendizaje)
+    actividad = models.ForeignKey(Actividad, null=True)
 #--------------------------------------------------------------------------
 class ElementoOpcionMultiple(models.Model):
     enunciado = models.CharField(max_length=100)
@@ -71,14 +71,14 @@ class ElementoOpcionMultiple(models.Model):
     incorrecta1 = models.CharField(max_length=100)
     incorrecta2 = models.CharField(max_length=100)
     incorrecta3 = models.CharField(max_length=100)
-    objetoAprendizaje = models.ForeignKey(ObjetoAprendizaje)
+    actividad = models.ForeignKey(Actividad, null=True)
 #-------------------------------------------------------------
 class ElementoIdentificacion(models.Model):
     enunciado = models.CharField(max_length=100)
     correcto = models.BooleanField()
-    objetoAprendizaje = models.ForeignKey(ObjetoAprendizaje)
+    actividad = models.ForeignKey(Actividad, null=True)
 #----------------------------------------------------------
 class ElementoAsociacion(models.Model):
     enunciado = models.CharField(max_length=100)
     imagen = models.ImageField()
-    objetoAprendizaje = models.ForeignKey(ObjetoAprendizaje)
+    actividad = models.ForeignKey(Actividad, null=True)

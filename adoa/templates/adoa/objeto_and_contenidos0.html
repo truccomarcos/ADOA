@@ -15,7 +15,7 @@
 {{ form.patron|as_crispy_field }}
 <br>
 <a href="{% url 'adoa:patrones' %}">Que patron elegir? </a>
-
+<br>
 {{ form.descripcion|as_crispy_field }}
 
 
@@ -25,25 +25,14 @@
   <input class={{model_name}}-amount type=number value={{formset|length}} hidden>
     <h1>{{ model_name|title }}{% if model_name == 'actividad' %}e{% endif %}s</h1>
     <div class={{model_name}}-formset>
-      {{formset|crispy}}
+      {{formset}}
     </div>
     {% if model_name == 'contenido' %}
-        <a class=add-contenido href="javascript:void(0)">Agregar</a>
+    <a class=add-contenido href="javascript:void(0)">Agregar</a>
     {% endif %}
-    {% if model_name == 'elementovof' %}
-      <a class=add-elementovof href="javascript:void(0)">Agregar</a>
-    {% endif %}
-    {% if model_name == 'elementoordenamiento' %}
-      <a class=add-elementoordenamiento href="javascript:void(0)">Agregar</a>
-    {% endif %}
-    {% if model_name == 'elementoasociacion' %}
-      <a class=add-elementoasociacion href="javascript:void(0)">Agregar</a>
-    {% endif %}
-    {% if model_name == 'elementoopcionmultiple' %}
-      <a class=add-elementoopcionmultiple href="javascript:void(0)">Agregar</a>
-    {% endif %}
-    {% if model_name == 'elementoidentificacion' %}
-      <a class=add-elementoidentificacion href="javascript:void(0)">Agregar</a>
+    {% if model_name == 'actividad' %}
+    <a class=add-actividad href="javascript:void(0)">Agregar</a>
+    <div class=actividad-template></div>
     {% endif %}
   {% endwith %}
 {% endfor %}

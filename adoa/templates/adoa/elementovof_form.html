@@ -1,0 +1,7 @@
+{% load crispy_forms_tags %}
+{%  for form in formset %}
+<div class=elementovof-form>
+  {% crispy form %}
+  <a onclick="deleteThis(this)" class=delete-elementovof href="javascript:void(0)">Quitar</a>
+</div>
+{% endfor %}

@@ -35,6 +35,7 @@ from django.core import serializers
 from django.http import JsonResponse
 from extra_views import FormSetView, ModelFormSetView, InlineFormSetView, InlineFormSet, CreateWithInlinesView, UpdateWithInlinesView, CalendarMonthView, NamedFormsetsMixin, SortableListMixin, SearchableListMixin
 from extra_views.generic import GenericInlineFormSet, GenericInlineFormSetView
+from extra_views.formsets import ModelFormSetMixin
 
 class ObjetoAprendizajeList(ListView):
     model = ObjetoAprendizaje
@@ -48,42 +49,108 @@ class GetContenidoPatron(View):
         contenidos = patron.contenidopatron_set.values('orden','descripcion')
         return JsonResponse({'contenidos': list(contenidos)})
 
-class ContenidoCreate(ModelFormSetView):
-    model = Contenido
+class ContenidoCreate(FormSetView):
     form_class = ContenidoForm
     template_name = 'adoa/contenido_form.html'
+    extra = 1
+
+class ElementoVoFCreate(FormSetView):
+    form_class = ElementoVoFForm
+    template_name = 'adoa/elementovof_form.html'
+    extra = 1
+
+class ElementoAsociacionCreate(FormSetView):
+    form_class = ElementoAsociacionForm
+    template_name = 'adoa/elementoasociacion_form.html'
+    extra = 1
+
+class ElementoIdentificacionCreate(FormSetView):
+    form_class = ElementoIdentificacionForm
+    template_name = 'adoa/elementoidentificacion_form.html'
+    extra = 1
+
+class ElementoOrdenamientoCreate(FormSetView):
+    form_class = ElementoOrdenamientoForm
+    template_name = 'adoa/elementoordenamiento_form.html'
+    extra = 1
+
+class ElementoOpcionMultipleCreate(FormSetView):
+    form_class = ElementoOpcionMultipleForm
+    template_name = 'adoa/elementoopcionmultiple_form.html'
+    extra = 1
 
 class ContenidoInline(InlineFormSet):
     model = Contenido
     form_class = ContenidoForm
+    extra=0
 
-class ContenidoView(ModelFormSetView):
-    model = Contenido
-    fields = ['orden','titulo','descripcion','contenido']
+class ElementoAsociacionInline(InlineFormSet):
+    model = ElementoAsociacion
+    form_class = ElementoAsociacionForm
+    extra=0
+
+class ElementoIdentificacionInline(InlineFormSet):
+    model = ElementoIdentificacion
+    form_class = ElementoIdentificacionForm
+    extra=0
+
+class ElementoOpcionMultipleInline(InlineFormSet):
+    model = ElementoOpcionMultiple
+    form_class = ElementoOpcionMultipleForm
+    extra=0
+
+class ElementoOrdenamientoInline(InlineFormSet):
+    model = ElementoOrdenamiento
+    form_class = ElementoOrdenamientoForm
+    extra=0
+
+class ElementoVoFInline(InlineFormSet):
+    model = ElementoVoF
+    form_class = ElementoVoFForm
+    extra=0
+
+class ContenidoView(FormSetView):
     form_class = ContenidoForm
     template_name = 'adoa/contenido_form.html'
-    def get(self,request,pk):
-        patron_id = self.kwargs['pk']
-        contenidos = Patron.objects.get(pk=patron_id).contenidopatron_set.values()
-        self.extra = len(contenidos)
-        return super(ContenidoView, self).get(self,request)
+    extra = 0
     def get_initial(self):
-        patron_id = self.kwargs['pk']
+        patron_id = self.request.GET['pk_patron']
         contenidos = Patron.objects.get(pk=patron_id).contenidopatron_set.values()
         return contenidos
+
+# class ActividadView(ModelFormSetView):
+#     model = Actividad
+#     fields = ['enunciado','tipo']
+#     form_class = ActividadForm
+#     template_name = 'adoa/actividad_form.html'
+#     extra=0
+#     def get_initial(self):
+#         return [{"enunciado":"","descripcion":""}]
+
+# class ElementoVoFView(ModelFormSetView):
+#     model = Actividad
+#     fields = ['enunciado','verdad']
+#     form_class = ElementoVoFForm
+#     template_name = 'adoa/elementovof_form.html'
+#     extra=1
+#     def get_initial(self):
+#         return [{"enunciado":"","verdad":""}]
 
 class ObjetoAprendizajeCreate(CreateWithInlinesView):
     model = ObjetoAprendizaje
     form_class = ObjetoAprendizajeForm
-    inlines = [ContenidoInline]
+    inlines = [ContenidoInline, ElementoVoFInline, ElementoAsociacionInline, ElementoOrdenamientoInline, ElementoIdentificacionInline, ElementoOpcionMultipleInline]
     template_name = 'adoa/objeto_and_contenidos.html'
-    # def form_valid(self,request):
-    #     form = self.form_class(self.request.POST)
-    #     objetoAprendizaje = form.save(commit=False)
-    #     objetoAprendizaje.user = self.request.user
-    #     objetoAprendizaje.save()
-    #     return HttpResponseRedirect(reverse_lazy('adoa:list', kwargs={'pk':objetoAprendizaje.id}))
-
+    def forms_valid(self,form, inlines):
+        pdb.set_trace()
+        oa = form.save(commit=False)
+        oa.user = self.request.user
+        oa.save()
+        for formset in inlines:
+            formset.save()
+        return HttpResponseRedirect(self.get_success_url())
+    def get_success_url(self):
+        return reverse_lazy('adoa:list')
 
 
 

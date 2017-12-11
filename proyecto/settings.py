@@ -194,8 +194,8 @@ CKEDITOR_CONFIGS = {
             ],
 
         ],
-        'width': 1140,
-        'height': 300,
+        'width': 900,
+        'height': 200,
         'toolbarCanCollapse': False,
     },
 

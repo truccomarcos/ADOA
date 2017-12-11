@@ -15,8 +15,6 @@ class ObjetoAprendizajeForm(forms.ModelForm):
     class Meta:
         model = ObjetoAprendizaje
         fields = ['titulo','patron','descripcion']
-        # class Media(object):
-        #     js = formset_media_js
     titulo = forms.CharField(max_length = 30)
     descripcion = forms.CharField(widget=CKEditorWidget())
     patron = forms.ModelChoiceField(queryset=Patron.objects.all())
@@ -47,17 +45,17 @@ class ContenidoForm(forms.ModelForm):
         fields = ['orden','titulo','descripcion','contenido']
     orden = forms.IntegerField()
     titulo = forms.CharField(max_length=100)
-    descripcion = forms.CharField(widget=CKEditorWidget())
+    descripcion = forms.CharField(max_length=300)
     contenido = forms.CharField(widget=CKEditorWidget())
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
-                    Field('orden',type='hidden'),
-                    Field('titulo'),
-                    Field('descripcion'),
-                    Field('contenido'),
-                    css_class='row-fluid'),
+                Field('orden',type='hidden'),
+                Field('titulo'),
+                Field('descripcion'),
+                Field('contenido'),
+                css_class='row-fluid'),
             )
         super(ContenidoForm, self).__init__(*args, **kwargs)
 
@@ -72,21 +70,45 @@ ObjetoAprendizajeInlineFormSet = inlineformset_factory(ObjetoAprendizaje,
 
 ContenidoFormSet = formset_factory(ContenidoForm)
 #--------------------------------------------------------------------------
-class ActividadForm(forms.ModelForm):
-    class Meta:
-        model = Actividad
-        fields = ['enunciado','tipo']
-    enunciado = forms.CharField(max_length=100)
-    def __init__(self, *args, **kwargs):
-        self.helper= FormHelper()
-        self.helper.layout = Layout(
-            Div(
-                Div('enunciado'),
-                Div('tipo'),
-            css_class='row-fluid'),
-        )
-        super(ActividadForm, self).__init__(*args, **kwargs)
+# class ActividadForm(forms.ModelForm):
+#     class Meta:
+#         model = Actividad
+#         fields = ['enunciado','tipo']
+#     enunciado = forms.CharField(max_length=100)
+#     def __init__(self, *args, **kwargs):
+#         self.helper= FormHelper()
+#         self.helper.layout = Layout(
+#             Div(
+#                 Div('enunciado'),
+#                 Div('tipo'),
+#             css_class='row-fluid'),
+#         )
+#         super(ActividadForm, self).__init__(*args, **kwargs)
 
+class ElementoVoFForm(forms.ModelForm):
+    class Meta:
+        model = ElementoVoF
+        fields = ['enunciado','verdad']
+
+class ElementoAsociacionForm(forms.ModelForm):
+    class Meta:
+        model = ElementoAsociacion
+        fields = ['enunciado','imagen']
+
+class ElementoIdentificacionForm(forms.ModelForm):
+    class Meta:
+        model = ElementoIdentificacion
+        fields = ['enunciado','correcto']
+
+class ElementoOpcionMultipleForm(forms.ModelForm):
+    class Meta:
+        model = ElementoOpcionMultiple
+        fields = ['enunciado','correcta','incorrecta1','incorrecta2','incorrecta3']
+
+class ElementoOrdenamientoForm(forms.ModelForm):
+    class Meta:
+        model = ElementoOrdenamiento
+        fields = ['enunciado','orden']
 #--------------------------------------------------------------------------
 #
 # ObjetoAprendizajeInlineFormset = inlineformset_factory(ObjetoAprendizaje,
@@ -135,11 +157,11 @@ class UserLoginForm(ModelForm):
 #         actividades = []
 
 #--------------------------------------------------------------------------
-class VerdaderoFalsoFormset(BaseFormSet):
-    def clean(self):
-        if any(self.errors):
-            return
-        VoFs = []
+# class VerdaderoFalsoFormset(BaseFormSet):
+#     def clean(self):
+#         if any(self.errors):
+#             return
+#         VoFs = []
 
 # class BaseNestedFormset(BaseInlineFormSet):
 #

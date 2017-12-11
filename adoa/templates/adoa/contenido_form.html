@@ -1,8 +1,7 @@
 {% load crispy_forms_tags %}
-{% load debug_tags %}
 {%  for form in formset %}
 <div class=contenido-form>
   {% crispy form %}
-  <a onclick="deleteContenido(this)" class=delete-contenido href="javascript:void(0)">Quitar</a>
+  <a onclick="deleteThis(this)" class=delete-contenido href="javascript:void(0)">Quitar</a>
 </div>
 {% endfor %}
